@@ -1,0 +1,26 @@
+{
+  "include": ["./src/**/*", "./assets/**/*"],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "lib": [
+      "dom"
+    ],
+    "outDir": "./dist",
+    "allowJs": true,
+    "target": "es6",
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["node_modules/*"],
+      "@src/*": ["*"]
+    },
+    "types": [
+      "node",
+      "three",
+      "tweenjs"
+    ],
+    "moduleResolution": "node"
+  }
+}
