@@ -6,6 +6,8 @@ module.exports = {
   entry: './src/App.ts',
   devServer: {
     port: 9000,
+    open: true,
+    watchContentBase: true,
   },
   output: {
     filename: 'bundle.js',

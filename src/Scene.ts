@@ -9,9 +9,10 @@ export default class Scene
 {
     private m_mouse_pos: any = {};
     private m_click_pos: any = {};
-    private m_selected_entity = null;
+    private m_selected_entity: Entity = null;
     private m_entity_selection_tween = null;
     private m_debug_mouse_ele: HTMLElement;
+    private m_debug_stats_ele: HTMLElement;
     private m_level: Level;
     private m_entities: Array<Entity>;
 
@@ -26,6 +27,7 @@ export default class Scene
     constructor()
     {
         this.m_debug_mouse_ele = document.getElementById("mousePos");
+        this.m_debug_stats_ele = document.getElementById("stats");
         let aspect = window.innerWidth / window.innerHeight;
         let d = 20;
         this.m_camera = new THREE.OrthographicCamera( -d * aspect, d * aspect, d, -d, 1, 1000 );
@@ -126,10 +128,10 @@ export default class Scene
             switch (e.code)
             {
                 case "Space":
-                    this.m_selected_entity.QueueAction("attack");
+                    this.m_selected_entity.QueueAction("attack", ()=>{});
                     break;
                 case "ControlLeft":
-                    this.m_selected_entity.QueueAction("limit_break");
+                    this.m_selected_entity.QueueAction("limit_break", ()=>{});
                     break;
             }
         };
@@ -179,6 +181,16 @@ export default class Scene
                 let level_z = entity_raycasted.position.z;
                 let grid_coord = this.m_level.ToGridCoordinate(new Coordinate(level_x, 0, level_z));
                 this.m_selected_entity = entity_raycasted.entity;
+                this.m_debug_stats_ele.innerText = 
+                    this.m_selected_entity.stats.StrString() + "\n" +
+                    this.m_selected_entity.stats.DexString() + "\n" +
+                    this.m_selected_entity.stats.VitString() + "\n" +
+                    this.m_selected_entity.stats.AgiString() + "\n" +
+                    this.m_selected_entity.stats.IntString() + "\n" +
+                    this.m_selected_entity.stats.MndString() + "\n" +
+                    this.m_selected_entity.stats.AttackString() + "\n" +
+                    this.m_selected_entity.stats.RaString() + "\n" +
+                    this.m_selected_entity.stats.DefenseString();
 
                 // TODO: Doesnt work for limit breaks???
                 // for (var sprite of entity_raycasted.children)

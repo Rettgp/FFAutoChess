@@ -1,5 +1,6 @@
 import ASSETS from "@src/AssetLoader"
 import SpriteMixer from "@src/thirdparty/SpriteMixer.js"
+import { Stats } from "@src/Stats";
 
 interface SpriteSheetParameters 
 {
@@ -77,6 +78,7 @@ export class Entity
     protected m_current_hp;
     protected m_scale;
     protected m_busy;
+    private m_stats: Stats;
 
     constructor(three, scene)
     {
@@ -91,6 +93,7 @@ export class Entity
         this.m_current_hp = 100;
         this.m_scale = {x: 5, y: 5}
         this.m_busy = false;
+        this.m_stats = new Stats();
 
         this.m_sprite_mixer.addEventListener('finished', (e)=> {
             if (this.m_actions.has(e.action.name))
@@ -103,6 +106,8 @@ export class Entity
         this.m_group.name = "entity";
         this.m_group.entity = this;
     }
+
+    get stats() { return this.m_stats; }
 
     public Update(delta)
     {
