@@ -1,4 +1,5 @@
 import {Entity, SpriteSheet} from "@src/Entity"
+import { Stats } from "@src/Stats";
 
 var Animations = 
 {
@@ -51,6 +52,17 @@ export default class Tidus extends Entity
     constructor(three, scene)
     {
         super(three, scene);
+
+        this.m_stats = new Stats(
+            {
+                str: 16,
+                dex: 20,
+                vit: 15,
+                agi: 20,
+                int: 13,
+                mnd: 10
+            }
+        );
 
         this.CreateSpriteSheet(Animations.idle).then(() =>{
             this.m_actions.get("idle").playLoop();

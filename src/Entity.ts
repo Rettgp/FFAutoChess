@@ -78,7 +78,7 @@ export class Entity
     protected m_current_hp;
     protected m_scale;
     protected m_busy;
-    private m_stats: Stats;
+    protected m_stats: Stats;
 
     constructor(three, scene)
     {

@@ -1,4 +1,5 @@
 import {Entity, SpriteSheet} from "@src/Entity"
+import { Stats } from "@src/Stats";
 
 var Animations = 
 {
@@ -51,6 +52,17 @@ export default class Sephiroth extends Entity
     constructor(three, scene)
     {
         super(three, scene);
+
+        this.m_stats = new Stats(
+            {
+                str: 21,
+                dex: 17,
+                vit: 16,
+                agi: 16,
+                int: 15,
+                mnd: 7
+            }
+        );
 
         this.CreateSpriteSheet(Animations.idle).then(() =>{
             this.m_actions.get("idle").playLoop();

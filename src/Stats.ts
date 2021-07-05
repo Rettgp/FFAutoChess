@@ -6,9 +6,6 @@ interface Attributes
     agi: number
     int: number
     mnd: number
-    attack: number
-    ra: number
-    defense: number
 }
 
 interface Resistances 
@@ -31,7 +28,7 @@ export class Stats
     constructor(attributes: Attributes = 
         {
             str: 10, dex: 10, vit: 10, agi: 10, 
-            int: 10, mnd: 10, attack: 1, ra: 1, defense: 10
+            int: 10, mnd: 10
         }, 
         resistances: Resistances = 
         {
@@ -71,17 +68,5 @@ export class Stats
     public MndString(): string
     {
         return `Mind: ${this.m_attributes.mnd}`;
-    }
-    public AttackString(): string
-    {
-        return `Attack: ${this.m_attributes.attack}`;
-    }
-    public RaString(): string
-    {
-        return `Ranged Attack: ${this.m_attributes.ra}`;
-    }
-    public DefenseString(): string
-    {
-        return `Defense: ${this.m_attributes.defense}`;
     }
 }

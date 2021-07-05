@@ -187,10 +187,7 @@ export default class Scene
                     this.m_selected_entity.stats.VitString() + "\n" +
                     this.m_selected_entity.stats.AgiString() + "\n" +
                     this.m_selected_entity.stats.IntString() + "\n" +
-                    this.m_selected_entity.stats.MndString() + "\n" +
-                    this.m_selected_entity.stats.AttackString() + "\n" +
-                    this.m_selected_entity.stats.RaString() + "\n" +
-                    this.m_selected_entity.stats.DefenseString();
+                    this.m_selected_entity.stats.MndString();
 
                 // TODO: Doesnt work for limit breaks???
                 // for (var sprite of entity_raycasted.children)
