@@ -4,6 +4,9 @@ const TWEEN = require('@tweenjs/tween.js');
 import {Level, Coordinate} from "@src/levels/Level"
 import {Entity} from "@src/Entity"
 import * as Characters from "@src/characters/Characters"
+import { MeleeAttack } from "./attacks/Attacks";
+import { Element } from "@src/Elements"
+import Calculations from "./calculations/Calculations";
 
 export default class Scene
 {
@@ -129,6 +132,9 @@ export default class Scene
             {
                 case "Space":
                     this.m_selected_entity.QueueAction("attack", ()=>{});
+                    let attack = new MeleeAttack(1, Element.None);
+                    let calc = new Calculations;
+                    calc.ApplyDamage(attack, this.m_selected_entity, this.m_selected_entity);
                     break;
                 case "ControlLeft":
                     this.m_selected_entity.QueueAction("limit_break", ()=>{});
@@ -182,6 +188,7 @@ export default class Scene
                 let grid_coord = this.m_level.ToGridCoordinate(new Coordinate(level_x, 0, level_z));
                 this.m_selected_entity = entity_raycasted.entity;
                 this.m_debug_stats_ele.innerText = 
+                    this.m_selected_entity.stats.HpString() + "\n" +
                     this.m_selected_entity.stats.StrString() + "\n" +
                     this.m_selected_entity.stats.DexString() + "\n" +
                     this.m_selected_entity.stats.VitString() + "\n" +

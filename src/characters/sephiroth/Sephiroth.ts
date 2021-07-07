@@ -63,6 +63,8 @@ export default class Sephiroth extends Entity
                 mnd: 7
             }
         );
+        this.m_stats.max_hp = 100;
+        this.m_stats.hp = 100;
 
         this.CreateSpriteSheet(Animations.idle).then(() =>{
             this.m_actions.get("idle").playLoop();
