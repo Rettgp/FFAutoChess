@@ -45,7 +45,8 @@ export default function SpriteMixer(THREE) {
 
 	// This offsets the texture to make the next frame of the animation appear.
 	function offsetTexture( actionSprite ) {
-		actionSprite.material.map.offset.x = actionSprite.getColumn() / actionSprite.tilesHoriz;
+        var tiles_horiz = actionSprite.mirrored ? -actionSprite.tilesHoriz : actionSprite.tilesHoriz;
+		actionSprite.material.map.offset.x = actionSprite.getColumn() / tiles_horiz;
 		actionSprite.material.map.offset.y = (actionSprite.tilesVert - actionSprite.getRow() -1 ) / actionSprite.tilesVert;
 	};
 
@@ -202,7 +203,12 @@ export default function SpriteMixer(THREE) {
 
 	// returns the column of the current tile.
 	function getColumn() {
-		return this.currentTile % this.tilesHoriz;
+		if (this.mirrored)
+		{
+            return Math.abs((this.currentTile % this.tilesHoriz) - (this.tilesHoriz - 1));
+        }
+
+		return (this.currentTile % this.tilesHoriz);
 	};
 
 
@@ -220,10 +226,16 @@ export default function SpriteMixer(THREE) {
 			- tilesHoriz : number of frames on the horizontal direction.
 			- tilesVert : number of frames on the vertical direction.
 	*/
-	function ActionSprite( texture, tilesHoriz, tilesVert ) {
-
-		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		texture.repeat.set( 1/tilesHoriz, 1/tilesVert );
+	function ActionSprite( texture, tilesHoriz, tilesVert, mirror ) {
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        if (mirror)
+        {
+            texture.repeat.set( 1/-tilesHoriz, 1/tilesVert );
+        }
+        else
+        {
+            texture.repeat.set( 1/tilesHoriz, 1/tilesVert );
+        }
 
 		let spriteMaterial = new THREE.SpriteMaterial({
 			map:texture, color:0xffffff});
@@ -235,9 +247,10 @@ export default function SpriteMixer(THREE) {
 		actionSprite.tilesVert = tilesVert ;
 		actionSprite.tiles = (tilesHoriz * tilesVert) ;
 		actionSprite.currentDisplayTime = 0 ;
-		actionSprite.currentTile = 0 ;
+		actionSprite.currentTile = 0;
 		actionSprite.paused = true ;
 		actionSprite.currentAction;
+		actionSprite.mirrored = mirror;
 
 		actionSprite.setFrame = setFrame ;
 		actionSprite.getRow = getRow;

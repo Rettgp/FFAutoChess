@@ -10,6 +10,7 @@ export default class Scene
     private m_mouse_pos: any = {};
     private m_click_pos: any = {};
     private m_selected_entity: Entity = null;
+    private m_enemy_selected: Entity = null;
     private m_entity_selection_tween = null;
     private m_debug_mouse_ele: HTMLElement;
     private m_debug_stats_ele: HTMLElement;
@@ -61,8 +62,8 @@ export default class Scene
         this.m_entities = new Array<Entity>();
 
         {
-            var entity = new Characters.Sephiroth(THREE, this.m_entity_scene);
-            var pos = this.m_level.ToLevelCoordinate(new Coordinate(1, 0, 2));
+            var entity = new Characters.Sephiroth(THREE, this.m_entity_scene, true);
+            var pos = this.m_level.ToLevelCoordinate(new Coordinate(0, 0, 2));
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
             this.m_entities.push(entity);
         }
@@ -77,13 +78,13 @@ export default class Scene
         window.addEventListener('mousemove', (e) => { this.OnMouseMove(e) }, false);
         window.addEventListener('click', (e) => { this.OnMouseClick(e) }, false);
 
-        this.Animate(0);
+        this.Animate();
         this.SetupControls();
     }
 
-    private Animate(time)
+    private Animate()
     {
-        requestAnimationFrame((time) => { this.Animate(time) });
+        requestAnimationFrame(() => { this.Animate() });
         this.m_renderer.clear();
         this.m_renderer.render(this.m_scene, this.m_camera);
         this.m_renderer.clearDepth();
@@ -113,7 +114,7 @@ export default class Scene
             }
         }
 
-        TWEEN.update(time);
+        TWEEN.update(delta);
     }
 
     private SetupControls()
@@ -125,13 +126,15 @@ export default class Scene
                 return;
             }
 
+            let defender_mesh = this.m_enemy_selected.Mesh();
+            this.m_selected_entity.Move(new Coordinate(defender_mesh.position.x, 0, defender_mesh.position.z));
             switch (e.code)
             {
                 case "Space":
-                    this.m_selected_entity.QueueAction("attack", ()=>{});
+                    this.m_selected_entity.QueueAnimation("attack", ()=>{});
                     break;
                 case "ControlLeft":
-                    this.m_selected_entity.QueueAction("limit_break", ()=>{});
+                    this.m_selected_entity.QueueAnimation("limit_break", ()=>{});
                     break;
             }
         };
@@ -177,9 +180,11 @@ export default class Scene
                 entity_intersects[i].object.parent.name === "entity")
             {
                 let entity_raycasted: any = entity_intersects[i].object.parent
-                let level_x = entity_raycasted.position.x;
-                let level_z = entity_raycasted.position.z;
-                let grid_coord = this.m_level.ToGridCoordinate(new Coordinate(level_x, 0, level_z));
+                if (this.m_selected_entity)
+                {
+                    this.m_enemy_selected = entity_raycasted.entity;
+                    return;
+                }
                 this.m_selected_entity = entity_raycasted.entity;
                 this.m_debug_stats_ele.innerText = 
                     this.m_selected_entity.stats.StrString() + "\n" +
@@ -188,37 +193,6 @@ export default class Scene
                     this.m_selected_entity.stats.AgiString() + "\n" +
                     this.m_selected_entity.stats.IntString() + "\n" +
                     this.m_selected_entity.stats.MndString();
-
-                // TODO: Doesnt work for limit breaks???
-                // for (var sprite of entity_raycasted.children)
-                // {
-                //     if (!sprite.visible)
-                //     {
-                //         continue;
-                //     }
-                //     sprite.material.color.setHex(0xFFFFF00);
-                //     this.m_entity_selection_tween = new TWEEN.Tween(sprite.material.color)
-                //         .to({r: 1, g: 1, b: 1, a: 0 }, 1000)
-                //         .easing(TWEEN.Easing.Quartic.In)
-                //         .onUpdate(
-                //             () =>
-                //             {
-                //                 sprite.material.color.r = this.r;
-                //                 sprite.material.color.g = this.g;
-                //                 sprite.material.color.b = this.b;
-                //             }
-                //         )
-                //         .onStop(
-                //             () =>
-                //             {
-                //                 sprite.material.color.r = 1;
-                //                 sprite.material.color.g = 1;
-                //                 sprite.material.color.b = 1;
-                //             }
-                //         )
-                //         .repeat(Infinity).yoyo(true)
-                //         .start();
-                // }
             }
         }
     }

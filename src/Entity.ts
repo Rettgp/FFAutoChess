@@ -1,6 +1,7 @@
 import ASSETS from "@src/AssetLoader"
 import SpriteMixer from "@src/thirdparty/SpriteMixer.js"
 import { Stats } from "@src/Stats";
+import { Coordinate } from "./levels/Level";
 
 interface SpriteSheetParameters 
 {
@@ -64,41 +65,91 @@ export class SpriteSheet
     get offset_y() { return this.m_offset_y; }
 }
 
+class Action
+{
+    protected m_id: string;
+    protected m_callback: Function;
+    protected m_completed: boolean;
+    constructor(id: string, callback?: Function)
+    {
+        this.m_id = id;
+        this.m_callback = callback;
+        this.m_completed = false;
+    }
+
+    public playOnce() {}
+    public stop() {}
+
+    get id() { return this.m_id; }
+    get callback() { return this.m_callback; }
+    get completed() { return this.m_completed; }
+    set completed(is_completed: boolean) { this.m_completed = is_completed; }
+}
+
+class AnimationAction extends Action
+{
+    protected m_sprite_action: any;
+    constructor(id: string, sprite_action: any, callback?: Function)
+    {
+        super(id, callback);
+        this.m_sprite_action = sprite_action;
+    }
+
+    public playOnce() { this.m_sprite_action.playOnce(); }
+    public stop() { this.m_sprite_action.stop(); }
+    get sprite_action() { return this.m_sprite_action; }
+}
+
+class MovementAction extends Action
+{
+    protected m_target_position: Coordinate;
+    constructor(id: string, target_position: Coordinate, callback?: Function)
+    {
+        super(id, callback);
+        this.m_target_position = target_position;
+    }
+
+    get target_position() { return this.m_target_position; }
+}
+
 export class Entity
 {
     static FPS = 100;
     protected m_three;
     protected m_sprite_mixer;
     protected m_scene;
-    protected m_actions;
+    protected m_animations;
     protected m_group;
-    protected m_current_animation_finished;
     protected m_action_queue;
     protected m_max_hp;
     protected m_current_hp;
     protected m_scale;
     protected m_busy;
     protected m_stats: Stats;
+    protected m_current_action: Action;
+    protected m_mirrored: boolean
 
-    constructor(three, scene)
+    constructor(three, scene, mirrored: boolean = false)
     {
         this.m_three = three;
         this.m_sprite_mixer = SpriteMixer(three);
         this.m_scene = scene;
-        this.m_actions = new Map();
+        this.m_animations = new Map<string, AnimationAction>();
         this.m_group = new this.m_three.Group();
-        this.m_current_animation_finished = false;
-        this.m_action_queue = new Array();
+        this.m_action_queue = new Array<Action>();
         this.m_max_hp = 100;
         this.m_current_hp = 100;
         this.m_scale = {x: 5, y: 5}
         this.m_busy = false;
         this.m_stats = new Stats();
+        this.m_current_action = null;
+        this.m_mirrored = mirrored;
 
         this.m_sprite_mixer.addEventListener('finished', (e)=> {
-            if (this.m_actions.has(e.action.name))
+            if (this.m_animations.has(e.action.name))
             {
-                this.m_actions.get(e.action.name).completed = true;
+                this.m_animations.get(e.action.name).completed = true;
+                this.m_current_action.completed = true;
                 this.m_busy = false;
             }
         });
@@ -112,58 +163,80 @@ export class Entity
     public Update(delta)
     {
         this.m_sprite_mixer.update(delta)
+
+        if (this.m_current_action && this.m_current_action instanceof MovementAction)
+        {
+            let move_action: MovementAction = this.m_current_action as MovementAction;
+            let rounded_current_mesh_x = Math.round(this.Mesh().position.x * 10) / 10;
+            let rounded_current_mesh_z = Math.round(this.Mesh().position.z * 10) / 10;
+            let rounded_target_mesh_x = Math.round(move_action.target_position.x * 10) / 10;
+            let rounded_target_mesh_z = Math.round(move_action.target_position.z * 10) / 10;
+            if (Math.abs(rounded_current_mesh_x - rounded_target_mesh_x) > 0.1 || 
+                Math.abs(rounded_current_mesh_z - rounded_target_mesh_z) > 0.1)
+            {
+                this.Mesh().position.x += (Math.sign(move_action.target_position.x - this.Mesh().position.x) * 0.15);
+                this.Mesh().position.z += (Math.sign(move_action.target_position.z - this.Mesh().position.z) * 0.15);
+            }
+            else
+            {
+                move_action.completed = true;
+                this.m_busy = false;
+            }
+        }
     }
 
-    public QueueAction(name, callback)
+    public Move(target: Coordinate, callback?: Function)
     {
-        if (!this.m_actions.has(name))
-        {
-            console.error(`Entity: No action available: ${name}`);
-            return
-        }
-
-        this.m_actions.get("idle").stop();
-        this.m_actions.get("idle").actionSprite.visible = false;
-
-        var action = {id: name, cb: callback};
-        this.m_action_queue.push(action);
+        this.m_action_queue.push(new MovementAction("move", target, callback));
         if (!this.m_busy)
         {
             this.PlayAction(this.m_action_queue.shift());
         }
     }
 
-    public PlayLoop(name)
+    public QueueAnimation(name, callback)
     {
-        if (!this.m_actions.has(name))
+        if (this.m_animations.has(name))
         {
-            console.error(`Entity: No action available: ${name}`);
-            return
+            this.m_action_queue.push(
+                new AnimationAction(name, this.m_animations.get(name), callback));
+            if (!this.m_busy)
+            {
+                this.PlayAction(this.m_action_queue.shift());
+            }
         }
-
-        this.m_actions.get(name).playLoop();
+        else
+        {
+            console.error(`Entity: No animation available: ${name}`);
+        }
     }
 
-    public PlayAction(action)
+    protected PlayLoop(name)
+    {
+        this.m_animations.get(name).playLoop();
+    }
+
+    protected PlayAction(action)
     {
         const promise = new Promise<void>((resolve, reject) => {
-            if (!this.m_actions.has(action.id))
-            {
-                console.error(`Entity: No action available: ${action.id}`);
-                resolve();
-                return
-            }
-
-            var sprite_action = this.m_actions.get(action.id);
-            sprite_action.completed = false;
+            action.completed = false;
             this.m_busy = true;
-            sprite_action.playOnce();
+            this.m_current_action = action;
+            if (action instanceof AnimationAction)
+            {
+                this.m_animations.get("idle").stop();
+                this.m_animations.get("idle").actionSprite.visible = false;
+
+                var sprite_action = this.m_animations.get(action.id);
+                sprite_action.playOnce();
+            }
 
             var wait = () =>
             {
-                if (sprite_action.completed) 
+                if (action.completed) 
                 {
-                    sprite_action.stop();
+                    action.stop();
+                    this.m_current_action = null;
 
                     var next_action = this.m_action_queue.shift();
                     if (next_action !== undefined)
@@ -172,7 +245,7 @@ export class Entity
                     }
                     else
                     {
-                        this.m_actions.get("idle").playLoop();
+                        this.m_animations.get("idle").playLoop();
                     }
 
                     if (action.cb !== undefined)
@@ -195,17 +268,27 @@ export class Entity
         const promise = new Promise<void>((resolve, reject) => {
             new this.m_three.TextureLoader().load(sprite_sheet.path, (texture)=> {
                 var actionSprite = this.m_sprite_mixer.ActionSprite( 
-                    texture, sprite_sheet.x_frames, sprite_sheet.y_frames);
+                    texture, sprite_sheet.x_frames, sprite_sheet.y_frames, this.m_mirrored);
                 var action = this.m_sprite_mixer.Action(
                     actionSprite, sprite_sheet.name, 
                     0, sprite_sheet.final_frame, Entity.FPS);
-                this.m_actions.set(sprite_sheet.name, action);
+                this.m_animations.set(sprite_sheet.name, action);
 
                 actionSprite.scale.x = this.m_scale.x * sprite_sheet.scale_x;
                 actionSprite.scale.y = this.m_scale.y * sprite_sheet.scale_y;
                 actionSprite.visible = false;
-                actionSprite.position.x += sprite_sheet.offset_x;
-                actionSprite.position.z += sprite_sheet.offset_z;
+                
+                if (this.m_mirrored)
+                {
+                    actionSprite.position.x += sprite_sheet.offset_z;
+                    actionSprite.position.z += sprite_sheet.offset_x;
+                }
+                else
+                {
+                    actionSprite.position.x += sprite_sheet.offset_x;
+                    actionSprite.position.z += sprite_sheet.offset_z;
+                }
+
                 actionSprite.position.y += sprite_sheet.offset_y;
 
                 actionSprite.renderOrder = 1

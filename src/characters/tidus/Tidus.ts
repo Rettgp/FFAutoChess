@@ -49,9 +49,9 @@ var Animations =
 
 export default class Tidus extends Entity
 {
-    constructor(three, scene)
+    constructor(three, scene, mirrored?: boolean)
     {
-        super(three, scene);
+        super(three, scene, mirrored);
 
         this.m_stats = new Stats(
             {
@@ -65,7 +65,7 @@ export default class Tidus extends Entity
         );
 
         this.CreateSpriteSheet(Animations.idle).then(() =>{
-            this.m_actions.get("idle").playLoop();
+            this.m_animations.get("idle").playLoop();
         });
         this.CreateSpriteSheet(Animations.attack);
         this.CreateSpriteSheet(Animations.limit_break);
