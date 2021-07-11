@@ -121,8 +121,6 @@ export class Entity
     protected m_animations;
     protected m_group;
     protected m_action_queue;
-    protected m_max_hp;
-    protected m_current_hp;
     protected m_scale;
     protected m_busy;
     protected m_stats: Stats;
@@ -137,8 +135,7 @@ export class Entity
         this.m_animations = new Map<string, AnimationAction>();
         this.m_group = new this.m_three.Group();
         this.m_action_queue = new Array<Action>();
-        this.m_max_hp = 100;
-        this.m_current_hp = 100;
+        this.m_action_queue = new Array();
         this.m_scale = {x: 5, y: 5}
         this.m_busy = false;
         this.m_stats = new Stats();
