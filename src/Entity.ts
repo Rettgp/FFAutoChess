@@ -156,6 +156,7 @@ export class Entity
     }
 
     get stats() { return this.m_stats; }
+    get mirrored() { return this.m_mirrored; }
 
     public Update(delta)
     {
@@ -168,8 +169,8 @@ export class Entity
             let rounded_current_mesh_z = Math.round(this.Mesh().position.z * 10) / 10;
             let rounded_target_mesh_x = Math.round(move_action.target_position.x * 10) / 10;
             let rounded_target_mesh_z = Math.round(move_action.target_position.z * 10) / 10;
-            if (Math.abs(rounded_current_mesh_x - rounded_target_mesh_x) > 0.1 || 
-                Math.abs(rounded_current_mesh_z - rounded_target_mesh_z) > 0.1)
+            if (Math.abs(rounded_current_mesh_x - rounded_target_mesh_x) > 0.2 || 
+                Math.abs(rounded_current_mesh_z - rounded_target_mesh_z) > 0.2)
             {
                 this.Mesh().position.x += (Math.sign(move_action.target_position.x - this.Mesh().position.x) * 0.15);
                 this.Mesh().position.z += (Math.sign(move_action.target_position.z - this.Mesh().position.z) * 0.15);
@@ -245,9 +246,9 @@ export class Entity
                         this.m_animations.get("idle").playLoop();
                     }
 
-                    if (action.cb !== undefined)
+                    if (action.callback !== undefined)
                     {
-                        action.cb();
+                        action.callback();
                     }
 
                     return resolve();

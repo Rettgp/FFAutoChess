@@ -80,6 +80,7 @@ export default class Scene
         this.CreateDebugGrid();
         window.addEventListener('mousemove', (e) => { this.OnMouseMove(e) }, false);
         window.addEventListener('click', (e) => { this.OnMouseClick(e) }, false);
+        window.addEventListener('contextmenu', (e) => { this.OnMouseClick(e) }, false);
 
         this.Animate();
         this.SetupControls();
@@ -130,14 +131,21 @@ export default class Scene
             }
 
             let defender_mesh = this.m_enemy_selected.Mesh();
-            this.m_selected_entity.Move(new Coordinate(defender_mesh.position.x, 0, defender_mesh.position.z));
+            let attacker_mesh = this.m_selected_entity.Mesh();
+            let previous_position = new Coordinate(attacker_mesh.position.x, attacker_mesh.position.y, attacker_mesh.position.z);
+            let target_position = new Coordinate(defender_mesh.position.x, 0, defender_mesh.position.z);
+            target_position.x += this.m_enemy_selected.mirrored ? this.m_level.CellSize() : -this.m_level.CellSize();
+            target_position.z += this.m_enemy_selected.mirrored ? -this.m_level.CellSize() : this.m_level.CellSize();
+            this.m_selected_entity.Move(target_position);
             switch (e.code)
             {
                 case "Space":
-                    this.m_selected_entity.QueueAnimation("attack", ()=>{});
+                    this.m_selected_entity.QueueAnimation("attack", ()=>{
+                        this.m_selected_entity.Move(previous_position);
+                    });
                     let attack = new MeleeAttack(1, Element.None);
                     let calc = new Calculations;
-                    calc.ApplyDamage(attack, this.m_selected_entity, this.m_selected_entity);
+                    calc.ApplyDamage(attack, this.m_selected_entity, this.m_enemy_selected);
                     break;
                 case "ControlLeft":
                     this.m_selected_entity.QueueAnimation("limit_break", ()=>{});
@@ -158,7 +166,7 @@ export default class Scene
 
     private OnMouseClick(event)
     {
-        if (event.button !== 0)
+        if (event.button !== 0 && event.button !== 2)
         {
             return;
         }
@@ -186,7 +194,7 @@ export default class Scene
                 entity_intersects[i].object.parent.name === "entity")
             {
                 let entity_raycasted: any = entity_intersects[i].object.parent
-                if (this.m_selected_entity)
+                if (event.button === 2)
                 {
                     this.m_enemy_selected = entity_raycasted.entity;
                     return;
