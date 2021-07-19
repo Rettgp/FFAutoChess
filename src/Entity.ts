@@ -153,6 +153,29 @@ export class Entity
 
         this.m_group.name = "entity";
         this.m_group.entity = this;
+
+        new this.m_three.TextureLoader().load("src/characters/health_bar.png", (texture)=> {
+            let health_texture = new this.m_three.SpriteMaterial({
+                map:texture, color:0xffffff});
+
+            let health_sprite = new this.m_three.Sprite(health_texture);
+            health_sprite.scale.x = 3;
+            health_sprite.scale.y = 0.5;
+            health_sprite.renderOrder = 2
+            health_sprite.translateY( 3 );
+            this.m_group.add(health_sprite);
+
+            let health_bar_texture = new this.m_three.SpriteMaterial({
+                color:0x43A047});
+
+            let health_bar_sprite = new this.m_three.Sprite(health_bar_texture);
+            health_bar_sprite.scale.x = 3;
+            health_bar_sprite.scale.y = 0.16;
+            health_bar_sprite.renderOrder = 2
+            health_bar_sprite.translateY( 3.15 );
+            health_bar_sprite.translateX( 0.025 );
+            this.m_group.add(health_bar_sprite);
+        });
     }
 
     get stats() { return this.m_stats; }
@@ -179,6 +202,14 @@ export class Entity
             {
                 move_action.completed = true;
                 this.m_busy = false;
+            }
+        }
+
+        for (let sprite of this.m_group.children)
+        {
+            if (sprite.visible)
+            {
+                // console.log(sprite.geometry.boundingBox);
             }
         }
     }
