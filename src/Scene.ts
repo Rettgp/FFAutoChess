@@ -66,13 +66,13 @@ export default class Scene
 
         {
             var entity = new Characters.Sephiroth(THREE, this.m_entity_scene, true);
-            var pos = this.m_level.ToLevelCoordinate(new Coordinate(0, 0, 2));
+            var pos = this.m_level.ToLevelCoordinate({x: 0, y: 0, z: 2});
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
             this.m_entities.push(entity);
         }
         {
             var entity = new Characters.Tidus(THREE, this.m_entity_scene);
-            var pos = this.m_level.ToLevelCoordinate(new Coordinate(1, 0, 0));
+            var pos = this.m_level.ToLevelCoordinate({x: 1, y: 0, z: 0});
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
             this.m_entities.push(entity);
         }
@@ -112,7 +112,7 @@ export default class Scene
             {
                 var level_x = intersects[i].point.x;
                 var level_z = intersects[i].point.z;
-                var grid_coord = this.m_level.ToGridCoordinate(new Coordinate(level_x, 0, level_z));
+                var grid_coord = this.m_level.ToGridCoordinate({x: level_x, y: 0, z: level_z});
                 this.m_debug_mouse_ele.innerText = 
                     `X: ${level_x.toFixed(2)}   Z: ${level_z.toFixed(2)}   (${grid_coord.x}, ${grid_coord.z})`;
             }
@@ -132,8 +132,8 @@ export default class Scene
 
             let defender_mesh = this.m_enemy_selected.Mesh();
             let attacker_mesh = this.m_selected_entity.Mesh();
-            let previous_position = new Coordinate(attacker_mesh.position.x, attacker_mesh.position.y, attacker_mesh.position.z);
-            let target_position = new Coordinate(defender_mesh.position.x, 0, defender_mesh.position.z);
+            let previous_position = {x: attacker_mesh.position.x, y: attacker_mesh.position.y, z: attacker_mesh.position.z};
+            let target_position = {x: defender_mesh.position.x, y: 0, z: defender_mesh.position.z};
             target_position.x += this.m_enemy_selected.mirrored ? this.m_level.CellSize() : -this.m_level.CellSize();
             target_position.z += this.m_enemy_selected.mirrored ? -this.m_level.CellSize() : this.m_level.CellSize();
             this.m_selected_entity.Move(target_position);

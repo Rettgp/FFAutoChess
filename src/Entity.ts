@@ -25,18 +25,6 @@ class Action
     set completed(is_completed: boolean) { this.m_completed = is_completed; }
 }
 
-class MovementAction extends Action
-{
-    protected m_target_position: Coordinate;
-    constructor(id: string, target_position: Coordinate, callback?: Function)
-    {
-        super(id, callback);
-        this.m_target_position = target_position;
-    }
-
-    get target_position() { return this.m_target_position; }
-}
-
 export class Entity
 {
     static FPS = 100;
@@ -49,8 +37,9 @@ export class Entity
     protected m_scale;
     protected m_busy;
     protected m_current_action: Action;
-    protected m_mirrored: boolean
-    protected m_components: Array<Component> = []
+    protected m_mirrored: boolean;
+    protected m_components: Array<Component> = [];
+    protected m_target_position: Coordinate = {x: 0, y: 0, z: 0};
 
     constructor(three, scene, mirrored: boolean = false)
     {
@@ -107,24 +96,19 @@ export class Entity
             component.Update(delta);
         });
 
-        if (this.m_current_action && this.m_current_action instanceof MovementAction)
+        let rounded_current_mesh_x = Math.round(this.Mesh().position.x * 10) / 10;
+        let rounded_current_mesh_z = Math.round(this.Mesh().position.z * 10) / 10;
+        let rounded_target_mesh_x = Math.round(this.m_target_position.x * 10) / 10;
+        let rounded_target_mesh_z = Math.round(this.m_target_position.z * 10) / 10;
+        if (Math.abs(rounded_current_mesh_x - rounded_target_mesh_x) > 0.2 || 
+            Math.abs(rounded_current_mesh_z - rounded_target_mesh_z) > 0.2)
         {
-            let move_action: MovementAction = this.m_current_action as MovementAction;
-            let rounded_current_mesh_x = Math.round(this.Mesh().position.x * 10) / 10;
-            let rounded_current_mesh_z = Math.round(this.Mesh().position.z * 10) / 10;
-            let rounded_target_mesh_x = Math.round(move_action.target_position.x * 10) / 10;
-            let rounded_target_mesh_z = Math.round(move_action.target_position.z * 10) / 10;
-            if (Math.abs(rounded_current_mesh_x - rounded_target_mesh_x) > 0.2 || 
-                Math.abs(rounded_current_mesh_z - rounded_target_mesh_z) > 0.2)
-            {
-                this.Mesh().position.x += (Math.sign(move_action.target_position.x - this.Mesh().position.x) * 0.15);
-                this.Mesh().position.z += (Math.sign(move_action.target_position.z - this.Mesh().position.z) * 0.15);
-            }
-            else
-            {
-                move_action.completed = true;
-                this.m_busy = false;
-            }
+            this.Mesh().position.x += (Math.sign(this.m_target_position.x - this.Mesh().position.x) * 0.15);
+            this.Mesh().position.z += (Math.sign(this.m_target_position.z - this.Mesh().position.z) * 0.15);
+        }
+        else
+        {
+            this.m_busy = false;
         }
 
         for (let sprite of this.m_group.children)
@@ -138,11 +122,7 @@ export class Entity
 
     public Move(target: Coordinate, callback?: Function)
     {
-        this.m_action_queue.push(new MovementAction("move", target, callback));
-        // if (!this.m_busy)
-        // {
-        //     this.PlayAction(this.m_action_queue.shift());
-        // }
+        this.m_target_position = target;
     }
 
 

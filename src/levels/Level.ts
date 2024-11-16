@@ -1,23 +1,11 @@
 import ASSETS from "@src/AssetLoader"
+import { Mesh } from "three";
 
-export class Coordinate
+export interface Coordinate
 {
-    private m_x: number;
-    private m_y: number;
-    private m_z: number;
-    constructor(x: number = 0, y: number = 0, z: number = 0)
-    {
-        this.m_x = x;
-        this.m_y = y;
-        this.m_z = z;
-    }
-
-    get x() { return this.m_x; }
-    set x(x: number) { this.m_x = x; }
-    get y() { return this.m_y; }
-    set y(y: number) { this.m_y = y; }
-    get z() { return this.m_z; }
-    set z(z: number) { this.m_z = z; }
+    x: number;
+    y: number;
+    z: number;
 }
 
 export class Level 
@@ -26,7 +14,7 @@ export class Level
     private m_material: any;
     private m_plane_size: {x: number, y: number, z: number};
     private m_geometry: any;
-    private m_cube: any;
+    private m_cube: Mesh;
 
     constructor(three)
     {
@@ -45,12 +33,12 @@ export class Level
         this.m_cube.name = "level";
     }
 
-    public Mesh()
+    public Mesh(): Mesh
     {
         return this.m_cube;
     }
 
-    public Size()
+    public Size(): Coordinate
     {
         return this.m_plane_size;
     }
@@ -60,21 +48,21 @@ export class Level
         return 5;
     }
 
-    public GridSize()
+    public GridSize(): Coordinate
     {
-        return {x: this.Size().x / this.CellSize(), z: this.Size().z / this.CellSize()};
+        return {x: this.Size().x / this.CellSize(), y: 0, z: this.Size().z / this.CellSize()};
     }
 
     public ToGridCoordinate(coordinate: Coordinate): Coordinate
     {
         let grid_x = Math.floor(Math.abs((this.Size().x / 2) + coordinate.x) / this.CellSize());
         let grid_z = Math.floor(Math.abs((this.Size().z / 2) + coordinate.z) / this.CellSize());
-        return new Coordinate(grid_x, 0, grid_z);
+        return {x: grid_x, y: 0, z: grid_z};
     }
 
     public ToLevelCoordinate(grid_coordinate: Coordinate): Coordinate
     {
-        let coord: Coordinate = new Coordinate();
+        let coord: Coordinate = {x: 0, y: 0, z: 0};
         var half_cell_size = this.CellSize() / 2;
         coord.x = (-this.Size().x / 2) + (grid_coordinate.x * this.CellSize()) + half_cell_size;
         coord.z = (-this.Size().z / 2) + (grid_coordinate.z * this.CellSize()) + half_cell_size;
