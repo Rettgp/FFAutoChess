@@ -2,6 +2,7 @@ import ASSETS from "@src/AssetLoader"
 import SpriteMixer from "@src/thirdparty/SpriteMixer.js"
 import { Stats } from "@src/Stats";
 import { Coordinate } from "./levels/Level";
+import { Component } from "@src/Component";
 
 interface SpriteSheetParameters 
 {
@@ -125,6 +126,7 @@ export class Entity
     protected m_busy;
     protected m_current_action: Action;
     protected m_mirrored: boolean
+    protected m_components: Array<Component>
 
     constructor(three, scene, mirrored: boolean = false)
     {
@@ -175,6 +177,11 @@ export class Entity
     }
 
     get mirrored() { return this.m_mirrored; }
+
+    public Find(componentName: string)
+    {
+        return this.m_components.find((element) => element.name === componentName);
+    }
 
     public Update(delta)
     {
