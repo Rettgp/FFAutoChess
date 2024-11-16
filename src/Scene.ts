@@ -140,15 +140,17 @@ export default class Scene
             switch (e.code)
             {
                 case "Space":
-                    this.m_selected_entity.QueueAnimation("attack", ()=>{
-                        this.m_selected_entity.Move(previous_position);
-                    });
+                    // TODO FIX
+                    // this.m_selected_entity.QueueAnimation("attack", ()=>{
+                    //     this.m_selected_entity.Move(previous_position);
+                    // });
                     let attack = new MeleeAttack(1, Element.None);
                     let calc = new Calculations;
                     calc.ApplyDamage(attack, this.m_selected_entity, this.m_enemy_selected);
                     break;
                 case "ControlLeft":
-                    this.m_selected_entity.QueueAnimation("limit_break", ()=>{});
+                    // TODO FIX
+                    // this.m_selected_entity.QueueAnimation("limit_break", ()=>{});
                     break;
             }
         };

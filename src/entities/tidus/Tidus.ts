@@ -1,6 +1,5 @@
-import {SpriteSheet} from "@src/Entity"
+import {SpriteComponent, SpriteSheet} from "@src/components/SpriteComponent";
 import Character from "@src/entities/Character";
-import { Attributes } from "@src/Stats";
 
 var Animations = 
 {
@@ -107,10 +106,12 @@ export default class Tidus extends Character
         this.stats.attributes.int = 13;
         this.stats.attributes.mnd = 10;
 
-        this.CreateSpriteSheet(Animations.idle).then(() =>{
-            this.m_animations.get("idle").playLoop();
+        let spriteComponent = new SpriteComponent(three, mirrored);
+        spriteComponent.AddSpriteSheet(Animations.idle).then(() =>{
+            spriteComponent.PlayLoop(Animations.idle.name);
         });
-        this.CreateSpriteSheet(Animations.attack);
-        this.CreateSpriteSheet(Animations.limit_break);
+        spriteComponent.AddSpriteSheet(Animations.attack);
+        spriteComponent.AddSpriteSheet(Animations.limit_break);
+        this.AddComponent(spriteComponent);
     }
 }

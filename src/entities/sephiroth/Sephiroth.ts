@@ -1,6 +1,6 @@
-import {SpriteSheet} from "@src/Entity"
-import {Attributes} from "@src/Stats"
+import {SpriteComponent, SpriteSheet} from "@src/components/SpriteComponent";
 import Character from "@src/entities/Character";
+import { Sprite } from "three";
 
 var Animations = 
 {
@@ -63,10 +63,12 @@ export default class Sephiroth extends Character
         this.stats.max_hp = 100;
         this.stats.hp = 100;
 
-        this.CreateSpriteSheet(Animations.idle).then(() =>{
-            this.m_animations.get("idle").playLoop();
+        let spriteComponent = new SpriteComponent(three, mirrored);
+        spriteComponent.AddSpriteSheet(Animations.idle).then(() =>{
+            spriteComponent.PlayLoop(Animations.idle.name);
         });
-        this.CreateSpriteSheet(Animations.attack);
-        this.CreateSpriteSheet(Animations.limit_break);
+        spriteComponent.AddSpriteSheet(Animations.attack);
+        spriteComponent.AddSpriteSheet(Animations.limit_break);
+        this.AddComponent(spriteComponent);
     }
 }
