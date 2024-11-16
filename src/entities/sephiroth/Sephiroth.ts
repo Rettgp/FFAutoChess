@@ -1,11 +1,12 @@
-import {Entity, SpriteSheet} from "@src/Entity"
-import { Stats } from "@src/Stats";
+import {SpriteSheet} from "@src/Entity"
+import {Attributes} from "@src/Stats"
+import Character from "@src/entities/Character";
 
 var Animations = 
 {
     idle: new SpriteSheet ({
         name: "idle", 
-        path: "src/characters/sephiroth/idle.png", 
+        path: "src/entities/sephiroth/idle.png", 
         x_frames: 3, 
         y_frames: 2, 
         final_frame: 3,
@@ -19,7 +20,7 @@ var Animations =
     }),
     attack: new SpriteSheet ({
         name: "attack", 
-        path: "src/characters/sephiroth/attack.png", 
+        path: "src/entities/sephiroth/attack.png", 
         x_frames: 3, 
         y_frames: 9, 
         final_frame: 26,
@@ -33,7 +34,7 @@ var Animations =
     }),
     limit_break: new SpriteSheet ({
         name: "limit_break", 
-        path: "src/characters/sephiroth/limit_break.png", 
+        path: "src/entities/sephiroth/limit_break.png", 
         x_frames: 3, 
         y_frames: 15, 
         final_frame: 43,
@@ -47,24 +48,20 @@ var Animations =
     })
 };
 
-export default class Sephiroth extends Entity
+export default class Sephiroth extends Character
 {
     constructor(three, scene, mirrored?: boolean)
     {
         super(three, scene, mirrored);
 
-        this.m_stats = new Stats(
-            {
-                str: 21,
-                dex: 17,
-                vit: 16,
-                agi: 16,
-                int: 15,
-                mnd: 7
-            }
-        );
-        this.m_stats.max_hp = 100;
-        this.m_stats.hp = 100;
+        this.stats.attributes.str = 21;
+        this.stats.attributes.dex = 17;
+        this.stats.attributes.vit = 16;
+        this.stats.attributes.agi = 16;
+        this.stats.attributes.int = 15;
+        this.stats.attributes.mnd = 7;
+        this.stats.max_hp = 100;
+        this.stats.hp = 100;
 
         this.CreateSpriteSheet(Animations.idle).then(() =>{
             this.m_animations.get("idle").playLoop();

@@ -1,4 +1,4 @@
-interface Attributes 
+export interface Attributes 
 {
     str: number
     dex: number
@@ -8,7 +8,7 @@ interface Attributes
     mnd: number
 }
 
-interface Resistances 
+export interface Resistances 
 {
     fire: number
     ice: number

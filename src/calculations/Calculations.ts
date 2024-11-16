@@ -9,6 +9,7 @@ export default class Calculations
 
 	public ApplyDamage(attack: Attack, attacker: Entity, defender: Entity)
 	{
-		defender.stats.hp -= attack.Damage(attacker);
+		// TODO: Fix to try to access stats
+		// defender.stats.hp -= attack.Damage(attacker);
 	}
 }

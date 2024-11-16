@@ -21,7 +21,9 @@ export class MeleeAttack extends Attack
 
 	public Damage(entity: Entity): number
 	{
-		return this.m_damage * entity.stats.attributes.str;
+		// TODO: Fix to access stats component
+		// return this.m_damage * entity.stats.attributes.str;
+		return 0;
 	}
 	public Element(): Element
 	{
@@ -42,7 +44,9 @@ export class Spell extends Attack
 
 	public Damage(entity: Entity): number
 	{
-		return this.m_damage * entity.stats.attributes.int;
+		// TODO: Fix to access stats component
+		// return this.m_damage * entity.stats.attributes.int;
+		return 0;
 	}
 	public Element(): Element
 	{

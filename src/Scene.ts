@@ -1,11 +1,11 @@
 import * as THREE from "three"
-import { OrbitControls } from '@src/thirdparty/OrbitControls.js'
 const TWEEN = require('@tweenjs/tween.js');
-import {Level, Coordinate} from "@src/levels/Level"
-import {Entity} from "@src/Entity"
-import * as Characters from "@src/characters/Characters"
+import { OrbitControls } from '@src/thirdparty/OrbitControls.js'
+import { Level, Coordinate } from "@src/levels/Level"
+import { Entity } from "@src/Entity"
 import { MeleeAttack } from "./attacks/Attacks";
 import { Element } from "@src/Elements"
+import * as Characters from "@src/entities/Characters"
 import Calculations from "./calculations/Calculations";
 
 export default class Scene
@@ -200,14 +200,15 @@ export default class Scene
                     return;
                 }
                 this.m_selected_entity = entity_raycasted.entity;
-                this.m_debug_stats_ele.innerText = 
-                    this.m_selected_entity.stats.HpString() + "\n" +
-                    this.m_selected_entity.stats.StrString() + "\n" +
-                    this.m_selected_entity.stats.DexString() + "\n" +
-                    this.m_selected_entity.stats.VitString() + "\n" +
-                    this.m_selected_entity.stats.AgiString() + "\n" +
-                    this.m_selected_entity.stats.IntString() + "\n" +
-                    this.m_selected_entity.stats.MndString();
+                // TODO: Fix to access stats component
+                // this.m_debug_stats_ele.innerText = 
+                    // this.m_selected_entity.stats.HpString() + "\n" +
+                    // this.m_selected_entity.stats.StrString() + "\n" +
+                    // this.m_selected_entity.stats.DexString() + "\n" +
+                    // this.m_selected_entity.stats.VitString() + "\n" +
+                    // this.m_selected_entity.stats.AgiString() + "\n" +
+                    // this.m_selected_entity.stats.IntString() + "\n" +
+                    // this.m_selected_entity.stats.MndString();
             }
         }
     }
@@ -253,8 +254,6 @@ class DebugGrid extends THREE.LineSegments
 		geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
         var material = new THREE.LineBasicMaterial( { color: color, opacity: 0.5 } );
 		super( geometry, material );
-
-		this.type = 'GridHelper';
 	}
 
 }
