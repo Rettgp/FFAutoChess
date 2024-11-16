@@ -1,6 +1,6 @@
 import ASSETS from "@src/AssetLoader"
 import { Stats } from "@src/Stats";
-import { Coordinate } from "./levels/Level";
+import { Coordinate, Level } from "./levels/Level";
 import { Component } from "@src/components/Component";
 import { SpriteComponent } from "@src/components/SpriteComponent";
 
@@ -81,7 +81,7 @@ export class Entity
 
     AddComponent(component: Component)
     {
-        this.m_scene.add(component.group)
+        this.Mesh().add(component.group)
         this.m_components.push(component);
     }
 
@@ -90,21 +90,22 @@ export class Entity
         return this.m_components.find((element) => element.name === componentName);
     }
 
-    public Update(delta)
+    public Update(level: Level, delta: number)
     {
         this.m_components.forEach((component: Component) => {
             component.Update(delta);
         });
 
+        let grid_target = level.ToLevelCoordinate(this.m_target_position);
         let rounded_current_mesh_x = Math.round(this.Mesh().position.x * 10) / 10;
         let rounded_current_mesh_z = Math.round(this.Mesh().position.z * 10) / 10;
-        let rounded_target_mesh_x = Math.round(this.m_target_position.x * 10) / 10;
-        let rounded_target_mesh_z = Math.round(this.m_target_position.z * 10) / 10;
+        let rounded_target_mesh_x = Math.round(grid_target.x * 10) / 10;
+        let rounded_target_mesh_z = Math.round(grid_target.z * 10) / 10;
         if (Math.abs(rounded_current_mesh_x - rounded_target_mesh_x) > 0.2 || 
             Math.abs(rounded_current_mesh_z - rounded_target_mesh_z) > 0.2)
         {
-            this.Mesh().position.x += (Math.sign(this.m_target_position.x - this.Mesh().position.x) * 0.15);
-            this.Mesh().position.z += (Math.sign(this.m_target_position.z - this.Mesh().position.z) * 0.15);
+            this.Mesh().position.x += (Math.sign(grid_target.x - this.Mesh().position.x) * 0.15);
+            this.Mesh().position.z += (Math.sign(grid_target.z - this.Mesh().position.z) * 0.15);
         }
         else
         {
@@ -120,9 +121,9 @@ export class Entity
         }
     }
 
-    public Move(target: Coordinate, callback?: Function)
+    public Move(grid_target: Coordinate, callback?: Function)
     {
-        this.m_target_position = target;
+        this.m_target_position = grid_target;
     }
 
 

@@ -68,12 +68,14 @@ export default class Scene
             var entity = new Characters.Sephiroth(THREE, this.m_entity_scene, true);
             var pos = this.m_level.ToLevelCoordinate({x: 0, y: 0, z: 2});
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
+            this.m_scene.add(entity.Mesh());
             this.m_entities.push(entity);
         }
         {
             var entity = new Characters.Tidus(THREE, this.m_entity_scene);
             var pos = this.m_level.ToLevelCoordinate({x: 1, y: 0, z: 0});
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
+            this.m_scene.add(entity.Mesh());
             this.m_entities.push(entity);
         }
 
@@ -100,7 +102,7 @@ export default class Scene
         // Entity updates
         for (var entity of this.m_entities)
         {
-            entity.Update(delta);
+            entity.Update(this.m_level, delta);
         }
 
         // Raycasting Debugging

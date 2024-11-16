@@ -113,5 +113,7 @@ export default class Tidus extends Character
         spriteComponent.AddSpriteSheet(Animations.attack);
         spriteComponent.AddSpriteSheet(Animations.limit_break);
         this.AddComponent(spriteComponent);
+
+        this.m_target_position = {x: 1, y: 0, z: 0}
     }
 }
