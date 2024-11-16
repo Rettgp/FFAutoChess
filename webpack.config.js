@@ -7,7 +7,11 @@ module.exports = {
   devServer: {
     port: 9000,
     open: true,
-    watchContentBase: true,
+    static: {
+      serveIndex: true,
+      directory: __dirname
+    },
+    watchFiles: ['src/**/*', 'assets/**/*']
   },
   output: {
     filename: 'bundle.js',
