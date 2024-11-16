@@ -2,7 +2,8 @@ import ASSETS from "@src/AssetLoader"
 import SpriteMixer from "@src/thirdparty/SpriteMixer.js"
 import { Stats } from "@src/Stats";
 import { Coordinate } from "./levels/Level";
-import { Component } from "@src/Component";
+import { Component } from "@src/components/Component";
+import AnimationComponent from "@src/components/AnimationComponent";
 
 interface SpriteSheetParameters 
 {
@@ -87,20 +88,6 @@ class Action
     set completed(is_completed: boolean) { this.m_completed = is_completed; }
 }
 
-class AnimationAction extends Action
-{
-    protected m_sprite_action: any;
-    constructor(id: string, sprite_action: any, callback?: Function)
-    {
-        super(id, callback);
-        this.m_sprite_action = sprite_action;
-    }
-
-    public playOnce() { this.m_sprite_action.playOnce(); }
-    public stop() { this.m_sprite_action.stop(); }
-    get sprite_action() { return this.m_sprite_action; }
-}
-
 class MovementAction extends Action
 {
     protected m_target_position: Coordinate;
@@ -133,7 +120,7 @@ export class Entity
         this.m_three = three;
         this.m_sprite_mixer = SpriteMixer(three);
         this.m_scene = scene;
-        this.m_animations = new Map<string, AnimationAction>();
+        this.m_animations = new Map<string, AnimationComponent>();
         this.m_group = new this.m_three.Group();
         this.m_action_queue = new Array<Action>();
         this.m_action_queue = new Array();
@@ -230,7 +217,7 @@ export class Entity
         if (this.m_animations.has(name))
         {
             this.m_action_queue.push(
-                new AnimationAction(name, this.m_animations.get(name), callback));
+                new AnimationComponent(name, this.m_animations.get(name), callback));
             if (!this.m_busy)
             {
                 this.PlayAction(this.m_action_queue.shift());
@@ -253,7 +240,7 @@ export class Entity
             action.completed = false;
             this.m_busy = true;
             this.m_current_action = action;
-            if (action instanceof AnimationAction)
+            if (action instanceof AnimationComponent)
             {
                 this.m_animations.get("idle").stop();
                 this.m_animations.get("idle").actionSprite.visible = false;
