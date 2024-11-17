@@ -202,17 +202,20 @@ export default class Scene {
             true,
         );
 
+        console.log(entity_intersects);
         for (let i = 0; i < entity_intersects.length; i++) {
-            if (
-                entity_intersects[i].object.visible &&
-                entity_intersects[i].object.parent.name === 'entity'
-            ) {
-                let entity_raycasted: any = entity_intersects[i].object.parent;
+            // TODO: This is messing around with propeties to get the Entity, FIX IT
+            let object3D: any = entity_intersects[i].object;
+            while (object3D.name !== 'entity' && object3D.parent !== null) {
+                object3D = object3D.parent;
+            }
+
+            if (object3D.name === 'entity' && object3D.visible) {
                 if (event.button === 2) {
-                    this.m_enemy_selected = entity_raycasted.entity;
-                    return;
+                    this.m_enemy_selected = object3D.entity as Entity;
+                    break;
                 }
-                this.m_selected_entity = entity_raycasted.entity;
+                this.m_selected_entity = object3D.entity as Entity;
                 const statsComponent = this.m_selected_entity.FindComponent(
                     'stats',
                 ) as StatsComponent;
