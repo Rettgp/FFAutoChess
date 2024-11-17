@@ -4,39 +4,14 @@ import { Coordinate, Level } from "./levels/Level";
 import { Component } from "@src/components/Component";
 import { SpriteComponent } from "@src/components/SpriteComponent";
 
-class Action
-{
-    protected m_id: string;
-    protected m_callback: Function;
-    protected m_completed: boolean;
-    constructor(id: string, callback?: Function)
-    {
-        this.m_id = id;
-        this.m_callback = callback;
-        this.m_completed = false;
-    }
-
-    public playOnce() {}
-    public stop() {}
-
-    get id() { return this.m_id; }
-    get callback() { return this.m_callback; }
-    get completed() { return this.m_completed; }
-    set completed(is_completed: boolean) { this.m_completed = is_completed; }
-}
 
 export class Entity
 {
     static FPS = 100;
     protected m_three;
-    protected m_sprite_mixer;
     protected m_scene;
-    protected m_animations;
     protected m_group;
-    protected m_action_queue;
     protected m_scale;
-    protected m_busy;
-    protected m_current_action: Action;
     protected m_mirrored: boolean;
     protected m_components: Array<Component> = [];
     protected m_target_position: Coordinate = {x: 0, y: 0, z: 0};
@@ -46,11 +21,7 @@ export class Entity
         this.m_three = three;
         this.m_scene = scene;
         this.m_group = new this.m_three.Group();
-        this.m_action_queue = new Array<Action>();
-        this.m_action_queue = new Array();
         this.m_scale = {x: 5, y: 5}
-        this.m_busy = false;
-        this.m_current_action = null;
         this.m_mirrored = mirrored;
         this.m_group.name = "entity";
         this.m_group.entity = this;
@@ -81,7 +52,10 @@ export class Entity
 
     AddComponent(component: Component)
     {
-        this.Mesh().add(component.group)
+        if (component.Mesh())
+        {
+            this.Mesh().add(component.Mesh())
+        }
         this.m_components.push(component);
     }
 
@@ -106,18 +80,6 @@ export class Entity
         {
             this.Mesh().position.x += (Math.sign(grid_target.x - this.Mesh().position.x) * 0.15);
             this.Mesh().position.z += (Math.sign(grid_target.z - this.Mesh().position.z) * 0.15);
-        }
-        else
-        {
-            this.m_busy = false;
-        }
-
-        for (let sprite of this.m_group.children)
-        {
-            if (sprite.visible)
-            {
-                // console.log(sprite.geometry.boundingBox);
-            }
         }
     }
 
