@@ -106,6 +106,9 @@ export default class Tidus extends Character
         this.stats.attributes.int = 13;
         this.stats.attributes.mnd = 10;
 
+        this.health.max = 100;
+        this.health.current = 100;
+
         let spriteComponent = new SpriteComponent(three, mirrored);
         spriteComponent.AddSpriteSheet(Animations.idle).then(() =>{
             spriteComponent.PlayLoop(Animations.idle.name);

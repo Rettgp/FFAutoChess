@@ -60,8 +60,9 @@ export default class Sephiroth extends Character
         this.stats.attributes.agi = 16;
         this.stats.attributes.int = 15;
         this.stats.attributes.mnd = 7;
-        this.stats.max_hp = 100;
-        this.stats.hp = 100;
+
+        this.health.max = 100;
+        this.health.current = 100;
 
         let spriteComponent = new SpriteComponent(three, mirrored);
         spriteComponent.AddSpriteSheet(Animations.idle).then(() =>{

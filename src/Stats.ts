@@ -24,8 +24,6 @@ export class Stats
 {
     private m_attributes: Attributes;
     private m_resistances: Resistances;
-    private m_max_hp: number;
-    private m_current_hp: number;
 
     constructor(attributes: Attributes = 
         {
@@ -40,23 +38,13 @@ export class Stats
     {
         this.m_attributes = attributes;
         this.m_resistances = resistances;
-        this.m_max_hp = 10;
-        this.m_current_hp = 10;
     }
 
     get attributes() { return this.m_attributes; }
     set attributes(attr: Attributes) { this.m_attributes = attr; }
     get resistances() { return this.m_resistances; }
     set resistances(res: Resistances) { this.m_resistances = res; }
-    get hp(): number { return this.m_current_hp; }
-    set hp(new_hp: number) { this.m_current_hp = new_hp; }
-    get max_hp(): number { return this.m_max_hp; }
-    set max_hp(new_hp: number) { this.m_max_hp = new_hp; }
 
-    public HpString(): string
-    {
-        return `HP: ${this.m_current_hp}/${this.m_max_hp}`;
-    }
     public StrString(): string
     {
         return `Strength: ${this.m_attributes.str}`;
