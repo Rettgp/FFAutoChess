@@ -2,8 +2,7 @@ import { Coordinate, Level } from './levels/Level';
 import { Component } from '@src/components/Component';
 import { Group } from 'three';
 
-export class Entity 
-{
+export class Entity {
     protected m_three;
     protected m_scene;
     protected m_group;
