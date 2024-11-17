@@ -1,8 +1,14 @@
+import prettier from 'eslint-plugin-prettier';
+
 export default [
     {
+        plugins: {
+            prettier,
+        },
         rules: {
-            semi: "error",
-            "prefer-const": "error",
-        }
-    }
+            'prettier/prettier': 'error',
+            semi: 'error',
+            'prefer-const': 'error',
+        },
+    },
 ];

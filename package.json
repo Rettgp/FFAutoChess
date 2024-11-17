@@ -11,6 +11,11 @@
     "build": "webpack --mode=production",
     "prepare": "husky install"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "author": "",
   "type": "module",
   "license": "ISC",
@@ -19,6 +24,7 @@
     "@types/node": "^22.9.0",
     "@types/three": "^0.170.0",
     "@types/tweenjs": "^1.0.8",
+    "eslint-plugin-prettier": "^5.2.1",
     "express": "^4.21.1",
     "three": "^0.170.0",
     "tsconfig-paths": "^4.2.0",
