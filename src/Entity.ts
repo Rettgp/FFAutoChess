@@ -1,8 +1,6 @@
-import ASSETS from "@src/AssetLoader"
-import { Stats } from "@src/Stats";
 import { Coordinate, Level } from "./levels/Level";
 import { Component } from "@src/components/Component";
-import { SpriteComponent } from "@src/components/SpriteComponent";
+import { Group } from "three";
 
 
 export class Entity
@@ -70,16 +68,20 @@ export class Entity
             component.Update(delta);
         });
 
-        let grid_target = level.ToLevelCoordinate(this.m_target_position);
-        let rounded_current_mesh_x = Math.round(this.Mesh().position.x * 10) / 10;
-        let rounded_current_mesh_z = Math.round(this.Mesh().position.z * 10) / 10;
-        let rounded_target_mesh_x = Math.round(grid_target.x * 10) / 10;
-        let rounded_target_mesh_z = Math.round(grid_target.z * 10) / 10;
-        if (Math.abs(rounded_current_mesh_x - rounded_target_mesh_x) > 0.2 || 
-            Math.abs(rounded_current_mesh_z - rounded_target_mesh_z) > 0.2)
+        let mesh: Group | undefined = this.Mesh()
+        if (mesh)
         {
-            this.Mesh().position.x += (Math.sign(grid_target.x - this.Mesh().position.x) * 0.15);
-            this.Mesh().position.z += (Math.sign(grid_target.z - this.Mesh().position.z) * 0.15);
+            let grid_target = level.ToLevelCoordinate(this.m_target_position);
+            let rounded_current_mesh_x = Math.round(mesh.position.x * 10) / 10;
+            let rounded_current_mesh_z = Math.round(mesh.position.z * 10) / 10;
+            let rounded_target_mesh_x = Math.round(grid_target.x * 10) / 10;
+            let rounded_target_mesh_z = Math.round(grid_target.z * 10) / 10;
+            if (Math.abs(rounded_current_mesh_x - rounded_target_mesh_x) > 0.2 || 
+                Math.abs(rounded_current_mesh_z - rounded_target_mesh_z) > 0.2)
+            {
+                mesh.position.x += (Math.sign(grid_target.x - mesh.position.x) * 0.15);
+                mesh.position.z += (Math.sign(grid_target.z - mesh.position.z) * 0.15);
+            }
         }
     }
 
