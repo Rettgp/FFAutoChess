@@ -202,7 +202,6 @@ export default class Scene {
             true,
         );
 
-        console.log(entity_intersects);
         for (let i = 0; i < entity_intersects.length; i++) {
             // TODO: This is messing around with propeties to get the Entity, FIX IT
             let object3D: any = entity_intersects[i].object;
