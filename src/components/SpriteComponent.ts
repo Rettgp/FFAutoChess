@@ -88,7 +88,7 @@ export class SpriteComponent implements Component
 
     constructor(three, mirrored: boolean = false)
     {
-        this._name = "animation";
+        this._name = "sprite";
         this._components = [];
         this._spriteMixer = SpriteMixer(three);
         this._three = three;
@@ -117,6 +117,11 @@ export class SpriteComponent implements Component
     Update(delta: number)
     {
         this._spriteMixer.update(delta);
+    }
+
+    Mesh(): Group | undefined
+    {
+        return this._group;
     }
     
     AddSpriteSheet(sprite_sheet: SpriteSheet)
