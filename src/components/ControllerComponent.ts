@@ -1,17 +1,22 @@
 import { Component } from '@src/components/Component';
 import { Coordinate, Level } from '@src/levels/Level';
+import { Entity } from '@src/Entity';
 import { Group } from 'three';
 
 export class ControllerComponent implements Component {
     private _components: Component[];
     private _position: Coordinate = { x: 0, y: 0, z: 0 };
+    private _gridPosition: Coordinate = { x: 0, y: 0, z: 0 };
     private _targetGridPosition: Coordinate = { x: 0, y: 0, z: 0 };
+    private _enemyTarget: Entity = undefined;
 
     constructor() {
         this._components = [];
     }
 
     Update(level: Level, delta: number) {
+        // TODO: Modify to have a controller use a target entity and if there
+        // is a target, run to a cell next to it.
         let grid_target = level.ToLevelCoordinate(this.targetGridPosition);
         let rounded_current_mesh_x = Math.round(this.position.x * 10) / 10;
         let rounded_current_mesh_z = Math.round(this.position.z * 10) / 10;
@@ -25,6 +30,7 @@ export class ControllerComponent implements Component {
                 Math.sign(grid_target.x - this.position.x) * 0.15;
             this.position.z +=
                 Math.sign(grid_target.z - this.position.z) * 0.15;
+            this._gridPosition = level.ToGridCoordinate(this._position);
         }
     }
 
@@ -88,10 +94,25 @@ export class ControllerComponent implements Component {
     set position(position: Coordinate) {
         this._position = position;
     }
+    get gridPosition(): Coordinate {
+        return this._gridPosition;
+    }
     get targetGridPosition(): Coordinate {
         return this._targetGridPosition;
     }
     set targetGridPosition(position: Coordinate) {
         this._targetGridPosition = position;
+    }
+    get enemyTarget(): Entity {
+        return this._enemyTarget;
+    }
+    set enemyTarget(target: Entity) {
+        this._enemyTarget = target;
+        let controller = this._enemyTarget.FindComponent(
+            'controller',
+        ) as ControllerComponent;
+        if (controller) {
+            this._targetGridPosition = controller.gridPosition;
+        }
     }
 }

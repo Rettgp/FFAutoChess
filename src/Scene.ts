@@ -212,6 +212,13 @@ export default class Scene {
             if (object3D.name === 'entity' && object3D.visible) {
                 if (event.button === 2) {
                     this.m_enemy_selected = object3D.entity as Entity;
+                    let controller: ControllerComponent =
+                        this.m_selected_entity?.FindComponent(
+                            'controller',
+                        ) as ControllerComponent;
+                    if (controller) {
+                        controller.enemyTarget = this.m_enemy_selected;
+                    }
                     break;
                 }
                 this.m_selected_entity = object3D.entity as Entity;
