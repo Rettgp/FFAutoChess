@@ -1,2 +1,2 @@
-export { default as Sephiroth } from '@src/entities/sephiroth/Sephiroth';
-export { default as Tidus } from '@src/entities/tidus/Tidus';
+export { default as Sephiroth } from '@src/entities/characters/Sephiroth';
+export { default as Tidus } from '@src/entities/characters/Tidus';

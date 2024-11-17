@@ -1,10 +1,10 @@
 import { SpriteComponent, SpriteSheet } from '@src/components/SpriteComponent';
-import Character from '@src/entities/Character';
+import Character from './Character';
 
 var Animations = {
     idle: new SpriteSheet({
         name: 'idle',
-        path: 'src/entities/tidus/idle.png',
+        path: 'assets/tidus/idle.png',
         x_frames: 3,
         y_frames: 2,
         final_frame: 3,
@@ -18,7 +18,7 @@ var Animations = {
     }),
     attack: new SpriteSheet({
         name: 'attack',
-        path: 'src/entities/tidus/attack.png',
+        path: 'assets/tidus/attack.png',
         x_frames: 3,
         y_frames: 4,
         final_frame: 10,
@@ -32,7 +32,7 @@ var Animations = {
     }),
     limit_break: new SpriteSheet({
         name: 'limit_break',
-        path: 'src/entities/tidus/limit_break.png',
+        path: 'assets/tidus/limit_break.png',
         x_frames: 3,
         y_frames: 27,
         final_frame: 78,
@@ -49,7 +49,7 @@ var Animations = {
 var Animations = {
     idle: new SpriteSheet({
         name: 'idle',
-        path: 'src/entities/tidus/idle.png',
+        path: 'assets/tidus/idle.png',
         x_frames: 3,
         y_frames: 2,
         final_frame: 3,
@@ -63,7 +63,7 @@ var Animations = {
     }),
     attack: new SpriteSheet({
         name: 'attack',
-        path: 'src/entities/tidus/attack.png',
+        path: 'assets/tidus/attack.png',
         x_frames: 3,
         y_frames: 4,
         final_frame: 10,
@@ -77,7 +77,7 @@ var Animations = {
     }),
     limit_break: new SpriteSheet({
         name: 'limit_break',
-        path: 'src/entities/tidus/limit_break.png',
+        path: 'assets/tidus/limit_break.png',
         x_frames: 3,
         y_frames: 27,
         final_frame: 78,

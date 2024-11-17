@@ -1,11 +1,11 @@
 import { SpriteComponent, SpriteSheet } from '@src/components/SpriteComponent';
-import Character from '@src/entities/Character';
+import Character from './Character';
 import { Sprite } from 'three';
 
 var Animations = {
     idle: new SpriteSheet({
         name: 'idle',
-        path: 'src/entities/sephiroth/idle.png',
+        path: 'assets/sephiroth/idle.png',
         x_frames: 3,
         y_frames: 2,
         final_frame: 3,
@@ -19,7 +19,7 @@ var Animations = {
     }),
     attack: new SpriteSheet({
         name: 'attack',
-        path: 'src/entities/sephiroth/attack.png',
+        path: 'assets/sephiroth/attack.png',
         x_frames: 3,
         y_frames: 9,
         final_frame: 26,
@@ -33,7 +33,7 @@ var Animations = {
     }),
     limit_break: new SpriteSheet({
         name: 'limit_break',
-        path: 'src/entities/sephiroth/limit_break.png',
+        path: 'assets/sephiroth/limit_break.png',
         x_frames: 3,
         y_frames: 15,
         final_frame: 43,
