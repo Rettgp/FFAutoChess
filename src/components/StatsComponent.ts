@@ -59,11 +59,11 @@ export class StatsComponent implements Component {
     }
 
     public AttributesToString(): string {
-        return `Strength: ${this._attributes.str}\n
-            Dexterity: ${this._attributes.dex}\n
-            Vitality: ${this._attributes.vit}\n
-            Agility: ${this._attributes.agi}\n
-            Intelligence: ${this._attributes.int}\n
+        return `Strength: ${this._attributes.str}
+            Dexterity: ${this._attributes.dex}
+            Vitality: ${this._attributes.vit}
+            Agility: ${this._attributes.agi}
+            Intelligence: ${this._attributes.int}
             Mind: ${this._attributes.mnd}`;
     }
 }
