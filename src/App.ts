@@ -1,3 +1,3 @@
-import Scene from "@src/Scene"
+import Scene from '@src/Scene';
 
 new Scene();

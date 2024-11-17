@@ -1,7 +1,9 @@
-const path = require('path')
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+// const path = require('path');
+import path from "path";
+import { fileURLToPath } from 'url';
+import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
 
-module.exports = {
+export default {
   mode: 'development',
   entry: './src/App.ts',
   devServer: {
@@ -9,13 +11,13 @@ module.exports = {
     open: true,
     static: {
       serveIndex: true,
-      directory: __dirname
+      directory: path.dirname(fileURLToPath(import.meta.url))
     },
     watchFiles: ['src/**/*', 'assets/**/*']
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'dist'),
     publicPath: '/dist/'
   },
   resolve: {
@@ -34,4 +36,4 @@ module.exports = {
   watchOptions: {
     ignored: /node_modules/
   }
-}
+};

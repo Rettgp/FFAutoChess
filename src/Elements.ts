@@ -1,7 +1,5 @@
-
-export enum Element
-{
-	None,
+export enum Element {
+    None,
     Fire,
     Ice,
     Wind,
@@ -9,5 +7,5 @@ export enum Element
     Lightning,
     Water,
     Light,
-    Dark
+    Dark,
 }

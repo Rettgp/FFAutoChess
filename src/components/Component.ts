@@ -1,9 +1,8 @@
-import { Group } from "three";
+import { Group } from 'three';
 
-export interface Component
-{
+export interface Component {
     name: string;
-    components: Array<Component>
+    components: Array<Component>;
     Update(delta: number);
     Mesh(): Group | undefined;
 }
