@@ -55,7 +55,7 @@ export class Entity {
         this.m_components.push(component);
     }
 
-    FindComponent(componentName: string) {
+    FindComponent(componentName: string): Component | undefined {
         return this.m_components.find(
             element => element.name === componentName,
         );

@@ -5,6 +5,7 @@ import { Level, Coordinate } from '@src/levels/Level';
 import { Entity } from '@src/Entity';
 import { MeleeAttack } from './attacks/Attacks';
 import { Element } from '@src/Elements';
+import { ControllerComponent } from '@src/components/ControllerComponent';
 import * as Characters from '@src/entities/Characters';
 import Calculations from './calculations/Calculations';
 
@@ -115,7 +116,7 @@ export default class Scene {
         );
 
         this.Animate();
-        this.SetupControls();
+        this.ListenForKeyboard();
     }
 
     private Animate() {
@@ -156,49 +157,13 @@ export default class Scene {
         TWEEN.update(delta);
     }
 
-    private SetupControls() {
+    private ListenForKeyboard() {
         document.onkeydown = e => {
-            if (!this.m_selected_entity) {
-                return;
-            }
-
-            let defender_mesh = this.m_enemy_selected.Mesh();
-            let attacker_mesh = this.m_selected_entity.Mesh();
-            let previous_position = {
-                x: attacker_mesh.position.x,
-                y: attacker_mesh.position.y,
-                z: attacker_mesh.position.z,
-            };
-            let target_position = {
-                x: defender_mesh.position.x,
-                y: 0,
-                z: defender_mesh.position.z,
-            };
-            target_position.x += this.m_enemy_selected.mirrored
-                ? this.m_level.CellSize()
-                : -this.m_level.CellSize();
-            target_position.z += this.m_enemy_selected.mirrored
-                ? -this.m_level.CellSize()
-                : this.m_level.CellSize();
-            this.m_selected_entity.Move(target_position);
-            switch (e.code) {
-                case 'Space':
-                    // TODO FIX
-                    // this.m_selected_entity.QueueAnimation("attack", ()=>{
-                    //     this.m_selected_entity.Move(previous_position);
-                    // });
-                    let attack = new MeleeAttack(1, Element.None);
-                    let calc = new Calculations();
-                    calc.ApplyDamage(
-                        attack,
-                        this.m_selected_entity,
-                        this.m_enemy_selected,
-                    );
-                    break;
-                case 'ControlLeft':
-                    // TODO FIX
-                    // this.m_selected_entity.QueueAnimation("limit_break", ()=>{});
-                    break;
+            if (this.m_selected_entity) {
+                let controller = this.m_selected_entity.FindComponent(
+                    'controller',
+                ) as ControllerComponent;
+                controller?.OnKeyPressed(e);
             }
         };
     }
@@ -250,7 +215,6 @@ export default class Scene {
                     return;
                 }
                 this.m_selected_entity = entity_raycasted.entity;
-                // TODO: Fix to access stats component
                 // this.m_debug_stats_ele.innerText =
                 // this.m_selected_entity.stats.HpString() + "\n" +
                 // this.m_selected_entity.stats.StrString() + "\n" +
