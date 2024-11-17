@@ -1,0 +1,12 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.2.3
+    hooks:
+      - id: typescript
+        name: TypeScript
+        language: typescript
+        args: ["--noEmit"]
+      - id: prettier
+        name: Prettier
+        language: javascript
+        args: ["--write"]
