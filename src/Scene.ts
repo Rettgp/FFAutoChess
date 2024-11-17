@@ -6,6 +6,7 @@ import { Entity } from '@src/Entity';
 import { MeleeAttack } from './attacks/Attacks';
 import { Element } from '@src/Elements';
 import { ControllerComponent } from '@src/components/ControllerComponent';
+import { StatsComponent } from '@src/components/StatsComponent';
 import * as Characters from '@src/entities/Characters';
 import Calculations from './calculations/Calculations';
 
@@ -204,6 +205,7 @@ export default class Scene {
             this.m_entity_scene.children,
             true,
         );
+
         for (let i = 0; i < entity_intersects.length; i++) {
             if (
                 entity_intersects[i].object.visible &&
@@ -215,14 +217,13 @@ export default class Scene {
                     return;
                 }
                 this.m_selected_entity = entity_raycasted.entity;
-                // this.m_debug_stats_ele.innerText =
-                // this.m_selected_entity.stats.HpString() + "\n" +
-                // this.m_selected_entity.stats.StrString() + "\n" +
-                // this.m_selected_entity.stats.DexString() + "\n" +
-                // this.m_selected_entity.stats.VitString() + "\n" +
-                // this.m_selected_entity.stats.AgiString() + "\n" +
-                // this.m_selected_entity.stats.IntString() + "\n" +
-                // this.m_selected_entity.stats.MndString();
+                const statsComponent = this.m_selected_entity.FindComponent(
+                    'stats',
+                ) as StatsComponent;
+                if (statsComponent) {
+                    this.m_debug_stats_ele.innerText =
+                        statsComponent.AttributesToString();
+                }
             }
         }
     }
