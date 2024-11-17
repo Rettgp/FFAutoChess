@@ -1,14 +1,32 @@
 import { Component } from '@src/components/Component';
+import { Coordinate, Level } from '@src/levels/Level';
 import { Group } from 'three';
 
 export class ControllerComponent implements Component {
     private _components: Component[];
+    private _position: Coordinate = { x: 0, y: 0, z: 0 };
+    private _targetGridPosition: Coordinate = { x: 0, y: 0, z: 0 };
 
-    constructor(max: number) {
+    constructor() {
         this._components = [];
     }
 
-    Update(delta: number) {}
+    Update(level: Level, delta: number) {
+        let grid_target = level.ToLevelCoordinate(this.targetGridPosition);
+        let rounded_current_mesh_x = Math.round(this.position.x * 10) / 10;
+        let rounded_current_mesh_z = Math.round(this.position.z * 10) / 10;
+        let rounded_target_mesh_x = Math.round(grid_target.x * 10) / 10;
+        let rounded_target_mesh_z = Math.round(grid_target.z * 10) / 10;
+        if (
+            Math.abs(rounded_current_mesh_x - rounded_target_mesh_x) > 0.2 ||
+            Math.abs(rounded_current_mesh_z - rounded_target_mesh_z) > 0.2
+        ) {
+            this.position.x +=
+                Math.sign(grid_target.x - this.position.x) * 0.15;
+            this.position.z +=
+                Math.sign(grid_target.z - this.position.z) * 0.15;
+        }
+    }
 
     Mesh(): Group | undefined {
         return undefined;
@@ -63,5 +81,17 @@ export class ControllerComponent implements Component {
     }
     get components(): Component[] {
         return this._components;
+    }
+    get position(): Coordinate {
+        return this._position;
+    }
+    set position(position: Coordinate) {
+        this._position = position;
+    }
+    get targetGridPosition(): Coordinate {
+        return this._targetGridPosition;
+    }
+    set targetGridPosition(position: Coordinate) {
+        this._targetGridPosition = position;
     }
 }

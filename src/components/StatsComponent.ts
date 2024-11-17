@@ -1,4 +1,5 @@
 import { Component } from '@src/components/Component';
+import { Level } from '@src/levels/Level';
 import { Group } from 'three';
 
 export interface Attributes {
@@ -32,7 +33,7 @@ export class StatsComponent implements Component {
         this._resistances = resistances;
     }
 
-    Update(delta: number) {}
+    Update(level: Level, delta: number) {}
 
     Mesh(): Group | undefined {
         return undefined;

@@ -1,4 +1,5 @@
 import { Component } from '@src/components/Component';
+import { Level } from '@src/levels/Level';
 import { Group } from 'three';
 
 export class HealthComponent implements Component {
@@ -12,7 +13,7 @@ export class HealthComponent implements Component {
         this._components = [];
     }
 
-    Update(delta: number) {}
+    Update(level: Level, delta: number) {}
 
     Mesh(): Group | undefined {
         return undefined;

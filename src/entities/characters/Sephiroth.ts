@@ -69,6 +69,6 @@ export default class Sephiroth extends Character {
         spriteComponent.AddSpriteSheet(Animations.limit_break);
         this.AddComponent(spriteComponent);
 
-        this.m_target_position = { x: 0, y: 0, z: 2 };
+        this.controller.targetGridPosition = { x: 0, y: 0, z: 2 };
     }
 }

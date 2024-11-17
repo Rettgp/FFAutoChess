@@ -1,6 +1,7 @@
 import SpriteMixer from '@src/thirdparty/SpriteMixer.js';
 import { Component } from '@src/components/Component';
 import { Group, Object3DEventMap } from 'three';
+import { Level } from '@src/levels/Level';
 
 interface SpriteSheetParameters {
     name: string;
@@ -160,7 +161,7 @@ export class SpriteComponent implements Component {
         return this._components;
     }
 
-    Update(delta: number) {
+    Update(level: Level, delta: number) {
         this._spriteMixer.update(delta);
     }
 

@@ -1,5 +1,6 @@
 import { Coordinate, Level } from './levels/Level';
 import { Component } from '@src/components/Component';
+import { ControllerComponent } from '@src/components/ControllerComponent';
 import { Group } from 'three';
 
 export class Entity {
@@ -8,7 +9,6 @@ export class Entity {
     protected m_scale;
     protected m_mirrored: boolean;
     protected m_components: Array<Component> = [];
-    protected m_target_position: Coordinate = { x: 0, y: 0, z: 0 };
 
     constructor(three, mirrored: boolean = false) {
         this.m_three = three;
@@ -62,31 +62,17 @@ export class Entity {
 
     public Update(level: Level, delta: number) {
         this.m_components.forEach((component: Component) => {
-            component.Update(delta);
+            component.Update(level, delta);
         });
 
         let mesh: Group | undefined = this.Mesh();
+        let controller: ControllerComponent | undefined = this.FindComponent(
+            'controller',
+        ) as ControllerComponent;
         if (mesh) {
-            let grid_target = level.ToLevelCoordinate(this.m_target_position);
-            let rounded_current_mesh_x = Math.round(mesh.position.x * 10) / 10;
-            let rounded_current_mesh_z = Math.round(mesh.position.z * 10) / 10;
-            let rounded_target_mesh_x = Math.round(grid_target.x * 10) / 10;
-            let rounded_target_mesh_z = Math.round(grid_target.z * 10) / 10;
-            if (
-                Math.abs(rounded_current_mesh_x - rounded_target_mesh_x) >
-                    0.2 ||
-                Math.abs(rounded_current_mesh_z - rounded_target_mesh_z) > 0.2
-            ) {
-                mesh.position.x +=
-                    Math.sign(grid_target.x - mesh.position.x) * 0.15;
-                mesh.position.z +=
-                    Math.sign(grid_target.z - mesh.position.z) * 0.15;
-            }
+            mesh.position.x = controller?.position.x;
+            mesh.position.z = controller?.position.z;
         }
-    }
-
-    public Move(grid_target: Coordinate, callback?: Function) {
-        this.m_target_position = grid_target;
     }
 
     public Mesh() {
