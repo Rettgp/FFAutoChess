@@ -48,8 +48,8 @@ var Animations = {
 };
 
 export default class Sephiroth extends Character {
-    constructor(three, scene, mirrored?: boolean) {
-        super(three, scene, mirrored);
+    constructor(three, mirrored?: boolean) {
+        super(three, mirrored);
 
         this.stats.attributes.str = 21;
         this.stats.attributes.dex = 17;

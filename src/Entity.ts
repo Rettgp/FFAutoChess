@@ -4,20 +4,19 @@ import { Group } from 'three';
 
 export class Entity {
     protected m_three;
-    protected m_scene;
     protected m_group;
     protected m_scale;
     protected m_mirrored: boolean;
     protected m_components: Array<Component> = [];
     protected m_target_position: Coordinate = { x: 0, y: 0, z: 0 };
 
-    constructor(three, scene, mirrored: boolean = false) {
+    constructor(three, mirrored: boolean = false) {
         this.m_three = three;
-        this.m_scene = scene;
         this.m_group = new this.m_three.Group();
         this.m_scale = { x: 5, y: 5 };
         this.m_mirrored = mirrored;
         this.m_group.name = 'entity';
+        // TODO: This is messing around with propeties to get the Entity, FIX IT
         this.m_group.entity = this;
 
         let health_texture = new this.m_three.SpriteMaterial({

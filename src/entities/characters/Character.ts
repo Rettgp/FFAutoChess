@@ -25,8 +25,8 @@ export default class Character extends Entity {
     );
     public health: HealthComponent;
 
-    constructor(three, scene, mirrored?: boolean) {
-        super(three, scene, mirrored);
+    constructor(three, mirrored?: boolean) {
+        super(three, mirrored);
 
         this.health = new HealthComponent(100);
         this.AddComponent(this.health);
