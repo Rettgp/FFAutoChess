@@ -8,7 +8,7 @@ export default class Character extends Entity {
     public health: HealthComponent;
     public controller: ControllerComponent;
 
-    constructor(three, mirrored?: boolean) {
+    constructor(team: number, three, mirrored?: boolean) {
         super(three, mirrored);
 
         this.health = new HealthComponent(100);
@@ -32,7 +32,7 @@ export default class Character extends Entity {
                 dark: 1,
             },
         );
-        this.controller = new ControllerComponent();
+        this.controller = new ControllerComponent(team);
 
         this.AddComponent(this.health);
         this.AddComponent(this.stats);

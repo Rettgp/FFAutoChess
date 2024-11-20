@@ -92,8 +92,8 @@ var Animations = {
 };
 
 export default class Tidus extends Character {
-    constructor(three, mirrored?: boolean) {
-        super(three, mirrored);
+    constructor(team: number, three, mirrored?: boolean) {
+        super(team, three, mirrored);
 
         this.stats.attributes.str = 16;
         this.stats.attributes.dex = 20;

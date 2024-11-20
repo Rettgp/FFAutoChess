@@ -9,9 +9,11 @@ export class ControllerComponent implements Component {
     private _gridPosition: Coordinate = { x: 0, y: 0, z: 0 };
     private _targetGridPosition: Coordinate = { x: 0, y: 0, z: 0 };
     private _enemyTarget: Entity = undefined;
+    private _team: number = 0;
 
-    constructor() {
+    constructor(team: number) {
         this._components = [];
+        this._team = team;
     }
 
     Update(level: Level, delta: number) {

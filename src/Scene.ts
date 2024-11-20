@@ -75,14 +75,14 @@ export default class Scene {
         this.m_entities = new Array<Entity>();
 
         {
-            var entity = new Characters.Sephiroth(THREE, true);
+            var entity = new Characters.Sephiroth(0, THREE, true);
             var pos = this.m_level.ToLevelCoordinate({ x: 0, y: 0, z: 2 });
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
             this.m_entity_scene.add(entity.Mesh());
             this.m_entities.push(entity);
         }
         {
-            var entity = new Characters.Tidus(THREE);
+            var entity = new Characters.Tidus(1, THREE);
             var pos = this.m_level.ToLevelCoordinate({ x: 1, y: 0, z: 0 });
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
             this.m_entity_scene.add(entity.Mesh());
