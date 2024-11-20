@@ -1,0 +1,112 @@
+{
+    "tidus": {
+        "name": "Tidus",
+        "stats": {
+            "str": 16,
+            "dex": 20,
+            "vit": 15,
+            "agi": 20,
+            "int": 13,
+            "mnd": 10
+        },
+        "health": {
+            "max": 100
+        },
+        "animations": {
+            "idle": {
+                "path": "assets/tidus/idle.png",
+                "x_frames": 3,
+                "y_frames": 2,
+                "final_frame": 3,
+                "frame_width": 97,
+                "frame_height": 68,
+                "scale_x": 1,
+                "scale_y": 1,
+                "offset_x": 0,
+                "offset_z": 0,
+                "offset_y": 0
+            },
+            "attack": {
+                "path": "assets/tidus/attack.png",
+                "x_frames": 3,
+                "y_frames": 4,
+                "final_frame": 10,
+                "frame_width": 167,
+                "frame_height": 100,
+                "scale_x": 1.72,
+                "scale_y": 1.47,
+                "offset_x": -2.94,
+                "offset_z": -0.39,
+                "offset_y": 0
+            },
+            "limit_break": {
+                "path": "assets/tidus/limit_break.png",
+                "x_frames": 3,
+                "y_frames": 27,
+                "final_frame": 78,
+                "frame_width": 287,
+                "frame_height": 214,
+                "scale_x": 2.959,
+                "scale_y": 3.147,
+                "offset_x": -6.9,
+                "offset_z": -3.35,
+                "offset_y": 0.4
+            }
+        }
+    },
+    "sephiroth": {
+        "name": "Sephiroth",
+        "stats": {
+            "str": 21,
+            "dex": 17,
+            "vit": 16,
+            "agi": 16,
+            "int": 15,
+            "mnd": 7
+        },
+        "health": {
+            "max": 100
+        },
+        "animations": {
+            "idle": {
+                "path": "assets/sephiroth/idle.png",
+                "x_frames": 3,
+                "y_frames": 2,
+                "final_frame": 3,
+                "frame_width": 128,
+                "frame_height": 76,
+                "scale_x": 1,
+                "scale_y": 1,
+                "offset_x": 0,
+                "offset_z": 0,
+                "offset_y": 0
+            },
+            "attack": {
+                "path": "assets/sephiroth/attack.png",
+                "x_frames": 3,
+                "y_frames": 9,
+                "final_frame": 26,
+                "frame_width": 280,
+                "frame_height": 185,
+                "scale_x": 2.1875,
+                "scale_y": 2.43,
+                "offset_x": -3.75,
+                "offset_z": 0.6,
+                "offset_y": 0
+            },
+            "limit_break": {
+                "path": "assets/sephiroth/limit_break.png",
+                "x_frames": 3,
+                "y_frames": 15,
+                "final_frame": 43,
+                "frame_width": 1010,
+                "frame_height": 207,
+                "scale_x": 7.89,
+                "scale_y": 2.73,
+                "offset_x": -6.9,
+                "offset_z": -0.2,
+                "offset_y": 0
+            }
+        }
+    }
+}

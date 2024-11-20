@@ -1,5 +1,5 @@
 import { SpriteComponent, SpriteSheet } from '@src/components/SpriteComponent';
-import Character from './Character';
+import Character from '../Character';
 
 var Animations = {
     idle: new SpriteSheet({
