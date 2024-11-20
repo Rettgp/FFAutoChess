@@ -12,8 +12,9 @@
         "health": {
             "max": 100
         },
-        "animations": {
-            "idle": {
+        "animations": [
+            {
+                "name": "idle",
                 "path": "assets/tidus/idle.png",
                 "x_frames": 3,
                 "y_frames": 2,
@@ -26,7 +27,8 @@
                 "offset_z": 0,
                 "offset_y": 0
             },
-            "attack": {
+            {
+                "name": "attack",
                 "path": "assets/tidus/attack.png",
                 "x_frames": 3,
                 "y_frames": 4,
@@ -39,7 +41,8 @@
                 "offset_z": -0.39,
                 "offset_y": 0
             },
-            "limit_break": {
+            {
+                "name": "limit_break",
                 "path": "assets/tidus/limit_break.png",
                 "x_frames": 3,
                 "y_frames": 27,
@@ -52,7 +55,7 @@
                 "offset_z": -3.35,
                 "offset_y": 0.4
             }
-        }
+        ]
     },
     "sephiroth": {
         "name": "Sephiroth",
@@ -67,8 +70,9 @@
         "health": {
             "max": 100
         },
-        "animations": {
-            "idle": {
+        "animations": [
+            {
+                "name": "idle",
                 "path": "assets/sephiroth/idle.png",
                 "x_frames": 3,
                 "y_frames": 2,
@@ -81,7 +85,8 @@
                 "offset_z": 0,
                 "offset_y": 0
             },
-            "attack": {
+            {
+                "name": "attack",
                 "path": "assets/sephiroth/attack.png",
                 "x_frames": 3,
                 "y_frames": 9,
@@ -94,7 +99,8 @@
                 "offset_z": 0.6,
                 "offset_y": 0
             },
-            "limit_break": {
+            {
+                "name": "limit_break",
                 "path": "assets/sephiroth/limit_break.png",
                 "x_frames": 3,
                 "y_frames": 15,
@@ -107,6 +113,6 @@
                 "offset_z": -0.2,
                 "offset_y": 0
             }
-        }
+        ]
     }
 }

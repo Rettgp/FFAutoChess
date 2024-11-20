@@ -7,7 +7,7 @@ import { MeleeAttack } from './attacks/Attacks';
 import { Element } from '@src/Elements';
 import { ControllerComponent } from '@src/components/ControllerComponent';
 import { StatsComponent } from '@src/components/StatsComponent';
-import * as Characters from '@src/entities/Characters';
+import { Character } from '@src/entities/Character';
 import Calculations from './calculations/Calculations';
 
 export default class Scene {
@@ -75,14 +75,16 @@ export default class Scene {
         this.m_entities = new Array<Entity>();
 
         {
-            var entity = new Characters.Sephiroth(0, THREE, true);
+            let entity: Character = new Character('sephiroth', 0, THREE, true);
+            entity.controller.targetGridPosition = { x: 0, y: 0, z: 2 };
             var pos = this.m_level.ToLevelCoordinate({ x: 0, y: 0, z: 2 });
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
             this.m_entity_scene.add(entity.Mesh());
             this.m_entities.push(entity);
         }
         {
-            var entity = new Characters.Tidus(1, THREE);
+            let entity: Character = new Character('tidus', 1, THREE);
+            entity.controller.targetGridPosition = { x: 1, y: 0, z: 0 };
             var pos = this.m_level.ToLevelCoordinate({ x: 1, y: 0, z: 0 });
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
             this.m_entity_scene.add(entity.Mesh());

@@ -23,84 +23,19 @@ interface SpriteMixerValues {
     action: any;
 }
 
-export class SpriteSheet {
-    private m_name;
-    private m_path;
-    private m_x_frames;
-    private m_y_frames;
-    private m_final_frame;
-    private m_frame_width;
-    private m_frame_height;
-    private m_scale_x;
-    private m_scale_y;
-    private m_offset_x;
-    private m_offset_z;
-    private m_offset_y;
-
-    constructor({
-        name,
-        path,
-        x_frames,
-        y_frames,
-        final_frame,
-        frame_width,
-        frame_height,
-        scale_x,
-        scale_y,
-        offset_x,
-        offset_z,
-        offset_y,
-    }: SpriteSheetParameters) {
-        this.m_name = name;
-        this.m_path = path;
-        this.m_x_frames = x_frames;
-        this.m_y_frames = y_frames;
-        this.m_final_frame = final_frame;
-        this.m_frame_width = frame_width;
-        this.m_frame_height = frame_height;
-        this.m_scale_x = scale_x;
-        this.m_scale_y = scale_y;
-        this.m_offset_x = offset_x;
-        this.m_offset_z = offset_z;
-        this.m_offset_y = offset_y;
-    }
-
-    get name() {
-        return this.m_name;
-    }
-    get x_frames() {
-        return this.m_x_frames;
-    }
-    get y_frames() {
-        return this.m_y_frames;
-    }
-    get final_frame() {
-        return this.m_final_frame;
-    }
-    get path() {
-        return this.m_path;
-    }
-    get frame_width() {
-        return this.m_frame_width;
-    }
-    get frame_height() {
-        return this.m_frame_height;
-    }
-    get scale_x() {
-        return this.m_scale_x;
-    }
-    get scale_y() {
-        return this.m_scale_y;
-    }
-    get offset_x() {
-        return this.m_offset_x;
-    }
-    get offset_z() {
-        return this.m_offset_z;
-    }
-    get offset_y() {
-        return this.m_offset_y;
-    }
+export interface SpriteSheet {
+    name: string;
+    path: string;
+    x_frames: number;
+    y_frames: number;
+    final_frame: number;
+    frame_width: number;
+    frame_height: number;
+    scale_x: number;
+    scale_y: number;
+    offset_x: number;
+    offset_z: number;
+    offset_y: number;
 }
 
 export class SpriteComponent implements Component {
