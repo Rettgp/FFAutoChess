@@ -1,19 +1,19 @@
 import { HealthComponent } from '@src/components/HealthComponent';
 import { Entity } from '@src/Entity';
 import { StatsComponent } from '@src/components/StatsComponent';
-import { ControllerComponent } from '@src/components/ControllerComponent';
+import { AiControllerComponent } from '@src/components/AiControllerComponent';
 import { SpriteComponent, SpriteSheet } from '@src/components/SpriteComponent';
 import characters from '@src/entities/characters.json';
 
 export class Character extends Entity {
     public stats: StatsComponent;
     public health: HealthComponent;
-    public controller: ControllerComponent;
+    public controller: AiControllerComponent;
 
     constructor(name: string, team: number, three, mirrored?: boolean) {
         super(three, mirrored);
 
-        this.controller = new ControllerComponent(team);
+        this.controller = new AiControllerComponent(team);
 
         this.stats = new StatsComponent(
             {

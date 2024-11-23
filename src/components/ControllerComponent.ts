@@ -8,12 +8,9 @@ export class ControllerComponent implements Component {
     private _position: Coordinate = { x: 0, y: 0, z: 0 };
     private _gridPosition: Coordinate = { x: 0, y: 0, z: 0 };
     private _targetGridPosition: Coordinate = { x: 0, y: 0, z: 0 };
-    private _enemyTarget: Entity = undefined;
-    private _team: number = 0;
 
-    constructor(team: number) {
+    constructor() {
         this._components = [];
-        this._team = team;
     }
 
     Update(level: Level, delta: number) {
@@ -104,17 +101,5 @@ export class ControllerComponent implements Component {
     }
     set targetGridPosition(position: Coordinate) {
         this._targetGridPosition = position;
-    }
-    get enemyTarget(): Entity {
-        return this._enemyTarget;
-    }
-    set enemyTarget(target: Entity) {
-        this._enemyTarget = target;
-        let controller = this._enemyTarget.FindComponent(
-            'controller',
-        ) as ControllerComponent;
-        if (controller) {
-            this._targetGridPosition = controller.gridPosition;
-        }
     }
 }
