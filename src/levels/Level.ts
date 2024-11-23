@@ -1,5 +1,6 @@
 import ASSETS from '@src/AssetLoader';
-import { Mesh } from 'three';
+import { Entity } from '@src/Entity';
+import { Mesh, Scene } from 'three';
 
 export interface Coordinate {
     x: number;
@@ -8,35 +9,51 @@ export interface Coordinate {
 }
 
 export class Level {
-    private m_three: any;
-    private m_material: any;
-    private m_plane_size: { x: number; y: number; z: number };
-    private m_geometry: any;
-    private m_cube: Mesh;
+    private _three: any;
+    private _material: any;
+    private _plane_size: { x: number; y: number; z: number };
+    private _geometry: any;
+    private _cube: Mesh;
+    private _entities: Entity[] = [];
+    private _entity_scene: Scene;
 
     constructor(three) {
-        this.m_three = three;
-        const texture = new this.m_three.TextureLoader().load(ASSETS.GRASS);
+        this._three = three;
+        const texture = new this._three.TextureLoader().load(ASSETS.GRASS);
 
-        this.m_plane_size = { x: 10, y: 0, z: 15 };
-        this.m_material = new this.m_three.MeshBasicMaterial({
+        this._plane_size = { x: 10, y: 0, z: 15 };
+        this._material = new this._three.MeshBasicMaterial({
             map: texture,
         });
-        this.m_geometry = new this.m_three.BoxGeometry(
-            this.m_plane_size.x,
-            this.m_plane_size.y,
-            this.m_plane_size.z,
+        this._geometry = new this._three.BoxGeometry(
+            this._plane_size.x,
+            this._plane_size.y,
+            this._plane_size.z,
         );
-        this.m_cube = new this.m_three.Mesh(this.m_geometry, this.m_material);
-        this.m_cube.name = 'level';
+        this._cube = new this._three.Mesh(this._geometry, this._material);
+        this._cube.name = 'level';
+
+        this._entity_scene = new this._three.Scene();
+    }
+
+    public Update(delta: number) {
+        // Entity updates
+        for (let entity of this._entities) {
+            entity.Update(this, delta);
+        }
     }
 
     public Mesh(): Mesh {
-        return this.m_cube;
+        return this._cube;
+    }
+
+    public AddEntity(entity: Entity) {
+        this._entities.push(entity);
+        this._entity_scene.add(entity.Mesh());
     }
 
     public Size(): Coordinate {
-        return this.m_plane_size;
+        return this._plane_size;
     }
 
     public CellSize() {
@@ -73,5 +90,13 @@ export class Level {
             grid_coordinate.z * this.CellSize() +
             half_cell_size;
         return coord;
+    }
+
+    get entities(): Entity[] {
+        return this._entities;
+    }
+
+    get entityScene(): Scene {
+        return this._entity_scene;
     }
 }

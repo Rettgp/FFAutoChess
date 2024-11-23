@@ -19,10 +19,8 @@ export default class Scene {
     private m_debug_mouse_ele: HTMLElement;
     private m_debug_stats_ele: HTMLElement;
     private m_level: Level;
-    private m_entities: Array<Entity>;
 
     private m_scene = new THREE.Scene();
-    private m_entity_scene = new THREE.Scene();
     private m_camera: THREE.OrthographicCamera;
     private m_renderer: THREE.WebGLRenderer;
     private m_raycaster: THREE.Raycaster;
@@ -72,23 +70,19 @@ export default class Scene {
 
         this.m_clock = new THREE.Clock();
 
-        this.m_entities = new Array<Entity>();
-
         {
             let entity: Character = new Character('sephiroth', 0, THREE, true);
             entity.controller.targetGridPosition = { x: 0, y: 0, z: 2 };
             var pos = this.m_level.ToLevelCoordinate({ x: 0, y: 0, z: 2 });
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
-            this.m_entity_scene.add(entity.Mesh());
-            this.m_entities.push(entity);
+            this.m_level.AddEntity(entity);
         }
         {
             let entity: Character = new Character('tidus', 1, THREE);
             entity.controller.targetGridPosition = { x: 1, y: 0, z: 0 };
             var pos = this.m_level.ToLevelCoordinate({ x: 1, y: 0, z: 0 });
             entity.Mesh().position.set(pos.x, 1.5, pos.z);
-            this.m_entity_scene.add(entity.Mesh());
-            this.m_entities.push(entity);
+            this.m_level.AddEntity(entity);
         }
 
         this.CreateDebugGrid();
@@ -125,15 +119,12 @@ export default class Scene {
         this.m_renderer.clear();
         this.m_renderer.render(this.m_scene, this.m_camera);
         this.m_renderer.clearDepth();
-        this.m_renderer.render(this.m_entity_scene, this.m_camera);
+        this.m_renderer.render(this.m_level.entityScene, this.m_camera);
 
         this.m_controls.update();
         var delta = this.m_clock.getDelta();
 
-        // Entity updates
-        for (var entity of this.m_entities) {
-            entity.Update(this.m_level, delta);
-        }
+        this.m_level.Update(delta);
 
         // Raycasting Debugging
         this.m_raycaster.setFromCamera(this.m_mouse_pos, this.m_camera);
@@ -200,7 +191,7 @@ export default class Scene {
         // of the model in another grid cell. Can I do clicking on a grid cell
         // Raycast clicking
         const entity_intersects = this.m_raycaster.intersectObjects(
-            this.m_entity_scene.children,
+            this.m_level.entityScene.children,
             true,
         );
 
@@ -213,15 +204,6 @@ export default class Scene {
 
             if (object3D.name === 'entity' && object3D.visible) {
                 if (event.button === 2) {
-                    this.m_enemy_selected = object3D.entity as Entity;
-                    let controller: ControllerComponent =
-                        this.m_selected_entity?.FindComponent(
-                            'controller',
-                        ) as ControllerComponent;
-                    if (controller) {
-                        controller.enemyTarget = this.m_enemy_selected;
-                    }
-                    break;
                 }
                 this.m_selected_entity = object3D.entity as Entity;
                 const statsComponent = this.m_selected_entity.FindComponent(
