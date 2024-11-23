@@ -55,8 +55,8 @@ export class Entity {
     }
 
     FindComponent(componentName: string): Component | undefined {
-        return this.m_components.find(
-            element => element.name === componentName,
+        return this.m_components.find(element =>
+            element.name.includes(componentName),
         );
     }
 
