@@ -2,7 +2,7 @@ import * as THREE from 'three';
 const TWEEN = require('@tweenjs/tween.js');
 import { OrbitControls } from '@src/thirdparty/OrbitControls.js';
 import { Level, Coordinate } from '@src/levels/Level';
-import { Entity } from '@src/Entity';
+import { Entity } from '@src/entities/Entity';
 import { MeleeAttack } from './attacks/Attacks';
 import { Element } from '@src/Elements';
 import { ControllerComponent } from '@src/components/ControllerComponent';

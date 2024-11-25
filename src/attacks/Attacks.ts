@@ -1,5 +1,5 @@
 import { Element } from '@src/Elements';
-import { Entity } from '@src/Entity';
+import { Entity } from '@src/entities/Entity';
 
 export abstract class Attack {
     public abstract Damage(entity: Entity): number;

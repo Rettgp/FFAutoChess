@@ -1,6 +1,5 @@
 import { Component } from '@src/components/Component';
 import { Coordinate, Level } from '@src/levels/Level';
-import { Entity } from '@src/Entity';
 import { Group } from 'three';
 
 export class ControllerComponent implements Component {
@@ -14,8 +13,6 @@ export class ControllerComponent implements Component {
     }
 
     Update(level: Level, delta: number) {
-        // TODO: Modify to have a controller use a target entity and if there
-        // is a target, run to a cell next to it.
         let grid_target = level.ToLevelCoordinate(this.targetGridPosition);
         let rounded_current_mesh_x = Math.round(this.position.x * 10) / 10;
         let rounded_current_mesh_z = Math.round(this.position.z * 10) / 10;

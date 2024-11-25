@@ -1,4 +1,4 @@
-import { Coordinate, Level } from './levels/Level';
+import { Coordinate, Level } from '@src/levels/Level';
 import { Component } from '@src/components/Component';
 import { ControllerComponent } from '@src/components/ControllerComponent';
 import { Group } from 'three';

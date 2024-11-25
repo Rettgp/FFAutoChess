@@ -1,5 +1,5 @@
 import { HealthComponent } from '@src/components/HealthComponent';
-import { Entity } from '@src/Entity';
+import { Entity } from '@src/entities/Entity';
 import { StatsComponent } from '@src/components/StatsComponent';
 import { AiControllerComponent } from '@src/components/AiControllerComponent';
 import { SpriteComponent, SpriteSheet } from '@src/components/SpriteComponent';

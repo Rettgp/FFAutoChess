@@ -1,4 +1,4 @@
-import { Entity } from '@src/Entity';
+import { Entity } from '@src/entities/Entity';
 import { ControllerComponent } from '@src/components/ControllerComponent';
 import { Level } from '@src/levels/Level';
 

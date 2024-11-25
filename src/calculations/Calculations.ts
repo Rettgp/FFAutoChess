@@ -1,5 +1,5 @@
 import { Attack } from '@src/attacks/Attacks';
-import { Entity } from '@src/Entity';
+import { Entity } from '@src/entities/Entity';
 
 export default class Calculations {
     constructor() {}

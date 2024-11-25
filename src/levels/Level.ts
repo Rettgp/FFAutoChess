@@ -1,5 +1,5 @@
 import ASSETS from '@src/AssetLoader';
-import { Entity } from '@src/Entity';
+import { Entity } from '@src/entities/Entity';
 import { Mesh, Scene } from 'three';
 
 export interface Coordinate {
