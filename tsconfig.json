@@ -4,16 +4,17 @@
     "node_modules"
   ],
   "compilerOptions": {
+    "module": "es6",
+    "esModuleInterop": true,
+    "target": "es6",
     "lib": [
       "dom"
     ],
     "outDir": "./dist",
     "allowJs": true,
-    "target": "es6",
     "sourceMap": true,
     "baseUrl": "./src",
     "resolveJsonModule": true,
-    "esModuleInterop": true,
     "paths": {
       "*": ["node_modules/*"],
       "@src/*": ["*"]
